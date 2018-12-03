@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "jsx": "react",
+    "noEmit": true,
+
+    "strict": true,
+
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+  }
+}
