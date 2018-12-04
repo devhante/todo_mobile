@@ -7,12 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/react": "^16.7.11",
-    "@types/react-native": "^0.57.15",
+    "@types/react": "^16.7.13",
+    "@types/react-native": "^0.57.17",
     "@types/react-native-vector-icons": "^4.6.4",
-    "babel-preset-react-native": "^4.0.0",
     "react": "16.6.1",
-    "react-native": "^0.57.7",
+    "react-native": "0.57.7",
     "react-native-typescript-transformer": "^1.2.10",
     "react-native-vector-icons": "^6.1.0",
     "typescript": "^3.2.1"
