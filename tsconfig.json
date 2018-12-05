@@ -9,5 +9,6 @@
 
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "experimentalDecorators": true,
   }
 }
