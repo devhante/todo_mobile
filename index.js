@@ -16,9 +16,6 @@ Navigation.startSingleScreenApp({
     screen: {
         screen: 'todomobile.LoginScreen',
         title: 'Login',
-        navigatiorStyle: {
-            navBarHidden: true,
-        },
-        navigatorButtons: {}
+        navigatorStyle: { navBarHidden: true },
     }
 });
