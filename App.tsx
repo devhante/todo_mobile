@@ -1,33 +1,44 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Provider } from 'mobx-react';
+import { Provider, inject } from 'mobx-react';
 import RootStore from './src/stores/rootStore';
 import { observable, action } from 'mobx';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
 type Props = {};
 export default class App extends Component<Props> {
-  @observable private username = '';
-  @observable private password = '';
+  @observable private username: string = '';
+  @observable private password: string = '';
   @observable private isLoginFailed = false;
 
   @action
-  private handleChangeUsername = (username: string) => {
-    this.username = username;
+  private handleChangeUsername = (value: string) => {
+    this.username = value
   }
 
   @action
-  private handleChangePassword = (password: string) => {
-    this.password = password;
+  private handleChangePassword = (value: string) => {
+    this.password = value;
+  }
+
+  private handlePressLogin = () => {
+    axios.post('https://practice.alpaca.kr/api/users/login/', {
+      username: this.username,
+      password: this.password
+    })
+    .then((response: AxiosResponse) => {
+      // localStorage.setItem('authToken', response.data.authToken);
+      console.log('login success');
+    })
+    .catch((err: AxiosError) => {
+      console.log('login failed');
+    });
   }
 
   render() {
     const rootStore = new RootStore();
 
-    const handlePressLogin = () => {
-
-    }
-    
     return (
       <Provider rootStore={rootStore}>
         <View style={styles.container}>
@@ -39,12 +50,12 @@ export default class App extends Component<Props> {
             <TextInput style={styles.username} placeholder='Username'
             placeholderTextColor='#F8F8F2' underlineColorAndroid='#F8F8F2'
             textContentType='username' secureTextEntry={false}
-            value={this.username} onChangeText={this.handleChangeUsername} />
+            onChangeText={this.handleChangeUsername} />
             <TextInput style={styles.password} placeholder='Password'
             placeholderTextColor='#F8F8F2' underlineColorAndroid='#F8F8F2'
             textContentType='password' secureTextEntry={true}
-            value={this.password} onChangeText={this.handleChangePassword} />
-            <Button color="#8BE9FD"  title="Login" onPress={handlePressLogin} />
+            onChangeText={this.handleChangePassword} />
+            <Button color="#8BE9FD"  title="Login" onPress={this.handlePressLogin} />
           </View>
         </View>
       </Provider>
