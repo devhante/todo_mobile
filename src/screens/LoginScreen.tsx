@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { ToastAndroid, StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { observable, action } from 'mobx';
 import axios, { AxiosResponse, AxiosError } from 'axios';
@@ -21,18 +21,16 @@ export default class LoginScreen extends Component<Props> {
     }
 
     private handlePressLogin = () => {
-        console.log(this.username + ' ' + this.password);
         axios.post('https://practice.alpaca.kr/api/users/login/', {
             username: this.username,
             password: this.password
         })
         .then((response: AxiosResponse) => {
             // localStorage.setItem('authToken', response.data.authToken);
-            console.log('login success');
             this.pushLogin();
         })
         .catch((err: AxiosError) => {
-            console.log('login failed');
+            this.toastLoginFailed();
         });
       }
 
@@ -42,6 +40,10 @@ export default class LoginScreen extends Component<Props> {
             title: 'Main',
             passProps: {},
         });
+    }
+
+    private toastLoginFailed = () => {
+        ToastAndroid.show('아이디 또는 비밀번호가 일치하지 않습니다.', ToastAndroid.SHORT);
     }
 
     render() {
