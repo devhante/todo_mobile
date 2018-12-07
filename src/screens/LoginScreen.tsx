@@ -27,19 +27,15 @@ export default class LoginScreen extends Component<Props> {
         })
         .then((response: AxiosResponse) => {
             // localStorage.setItem('authToken', response.data.authToken);
-            this.pushLogin();
+            this.navigateToMain();
         })
         .catch((err: AxiosError) => {
             this.toastLoginFailed();
         });
-      }
+    }
 
-    private pushLogin = () => {
-        this.props.navigator.push({
-            screen: 'todomobile.MainScreen',
-            title: 'Main',
-            passProps: {},
-        });
+    private navigateToMain = () => {
+        this.props.navigation.navigate('Main');
     }
 
     private toastLoginFailed = () => {

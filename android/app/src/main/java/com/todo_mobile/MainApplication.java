@@ -3,6 +3,8 @@ package com.todo_mobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -12,29 +14,37 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.reactnativenavigation.NavigationApplication;
+public class MainApplication extends Application implements ReactApplication {
 
-public class MainApplication extends NavigationApplication {
-  
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    @Override
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
+    }
+    
+    @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+        new VectorIconsPackage(),
+        new RNGestureHandlerPackage()
+      );
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
+  };
+
   @Override
-  public boolean isDebug() {
-    return BuildConfig.DEBUG;
+  public ReactNativeHost getReactNativeHost() {
+    return mReactNativeHost;
   }
 
-  protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-      new VectorIconsPackage()
-    );
-  }
-
   @Override
-  public List<ReactPackage> createAdditionalReactPackages() {
-    return getPackages();
-  }
-
-  @Override
-  public String getJSMainModuleName() {
-    return "index";
+  public void onCreate() {
+    super.onCreate();
+    SoLoader.init(this, false);
   }
 }
