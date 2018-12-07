@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ToastAndroid, StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { observable, action } from 'mobx';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
@@ -47,7 +47,7 @@ export default class LoginScreen extends Component<Props> {
             <View style={styles.container}>
                 <View style={styles.container}>
                 <View style={styles.top}>
-                    <Icon style={styles.icon} name="list-ul" size={60} color='#8BE9FD' />
+                    <Icon style={styles.icon} name="done" size={60} color='#8BE9FD' />
                     <Text style={styles.title}>To-do List App</Text>
                 </View>
                 <View style={styles.bottom}>
