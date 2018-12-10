@@ -1,14 +1,32 @@
 import React, { Component } from 'react';
-import { ToastAndroid, StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { AsyncStorage, ToastAndroid, StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { observable, action } from 'mobx';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { inject, observer } from 'mobx-react';
+import RootStore from '../stores/rootStore';
 
-type Props = {};
+type Props = {
+    rootStore: RootStore;
+};
+
+@inject('rootStore')
+@observer
 export default class LoginScreen extends Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        const rootStore = this.props.rootStore;
+
+        this.getAuthToken((value) => {
+            if(value !== 'none') {
+                rootStore.appStore.login();
+                this.navigateToMain();
+            }
+        });
+    }
+
     @observable private username: string = '';
     @observable private password: string = '';
-    @observable private isLoginFailed = false;
 
     @action
     private handleChangeUsername = (value: string) => {
@@ -21,17 +39,36 @@ export default class LoginScreen extends Component<Props> {
     }
 
     private handlePressLogin = () => {
+        const rootStore = this.props.rootStore;
         axios.post('https://practice.alpaca.kr/api/users/login/', {
             username: this.username,
             password: this.password
         })
         .then((response: AxiosResponse) => {
-            // localStorage.setItem('authToken', response.data.authToken);
+            this.setAuthToken(response.data.authToken);
+            rootStore.appStore.login();
             this.navigateToMain();
         })
         .catch((err: AxiosError) => {
             this.toastLoginFailed();
         });
+    }
+
+    private setAuthToken = async (value: string) => {
+        try {
+            await AsyncStorage.setItem('authToken', value);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    private getAuthToken = async (callback: (value: string) => void) => {
+        try {
+            let value = await AsyncStorage.getItem('authToken') || 'none';
+            callback(value);
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     private navigateToMain = () => {

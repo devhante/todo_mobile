@@ -13,21 +13,20 @@ export default class AxiosStore {
 
     @action
     public create = () => {
-        this.rootStore.axiosStore.instance = axios.create({
-            baseURL: 'https://practice.alpaca.kr/api/',
-            headers: { 'Authorization': 'Token ' + this.getAuthToken() }
+        this.getAuthToken((value) => {
+            this.rootStore.axiosStore.instance = axios.create({
+                baseURL: 'https://practice.alpaca.kr/api/',
+                headers: {'Authorization': 'Token ' + value }
+            });
         });
     }
 
-    private getAuthToken = async () => {
-        let value = '';
+    private getAuthToken = async (callback: (value: string) => void) => {
         try {
-            value = await AsyncStorage.getItem('authToken') || 'none';
-            console.log(value);
+            let value = await AsyncStorage.getItem('authToken') || 'none';
+            callback(value)
         } catch (error) {
             console.log(error.message);
         }
-
-        return value;
     }
 }

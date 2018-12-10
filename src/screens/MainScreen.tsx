@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ToastAndroid, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ToastAndroid, TextInput, AsyncStorage } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import RootStore from '../stores/rootStore';
@@ -28,8 +28,19 @@ export default class MainScreen extends Component<Props> {
     };
 
     handlePressLogout = () => {
+        const rootStore = this.props.rootStore;
+        rootStore.appStore.logout();
+        this.removeAuthToken();
         this.navigateToLogin();
     };
+
+    private removeAuthToken = async () => {
+        try {
+            await AsyncStorage.removeItem('authToken');
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
     private navigateToLogin = () => {
         this.props.navigation.navigate('Login');
