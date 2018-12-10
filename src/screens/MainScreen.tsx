@@ -27,9 +27,13 @@ export default class MainScreen extends Component<Props> {
         ToastAndroid.show('Delete', ToastAndroid.SHORT);
     };
 
-    handlePressMore = () => {
-        ToastAndroid.show('More', ToastAndroid.SHORT);
+    handlePressLogout = () => {
+        this.navigateToLogin();
     };
+
+    private navigateToLogin = () => {
+        this.props.navigation.navigate('Login');
+    }
 
     render() {
         const rootStore = this.props.rootStore;
@@ -44,8 +48,8 @@ export default class MainScreen extends Component<Props> {
                     </View>
                     <Icon style={styles.deleteIcon} name='delete' size={24}
                     color='#BD93F9' onPress={this.handlePressDelete} />
-                    <Icon style={styles.moreIcon} name='more-vert' size={24}
-                    color='#BD93F9' onPress={this.handlePressMore} />
+                    <Icon style={styles.logoutIcon} name='exit-to-app' size={24}
+                    color='#BD93F9' onPress={this.handlePressLogout} />
                 </View>
                 <View style={styles.content}>
                     <Text style={styles.contentText}>Content Text</Text>
@@ -86,7 +90,7 @@ const styles = StyleSheet.create({
     deleteIcon: {
         marginLeft: 8,
     },
-    moreIcon: {
+    logoutIcon: {
         marginLeft: 8,
     },
     searchIcon: {
@@ -96,7 +100,8 @@ const styles = StyleSheet.create({
         color: '#BD93F9',
         fontSize: 12,
         fontWeight: "500",
-        width: 200,
+        width: 280,
+        padding: 0,
     },
     contentText: {
         color: '#F8F8F2',
