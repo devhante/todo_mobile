@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ToastAndroid, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, ToastAndroid, TextInput, AsyncStorage, TouchableOpacity } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import RootStore from '../stores/rootStore';
@@ -15,8 +15,9 @@ export default class MainScreen extends Component<Props> {
     constructor(props: Props) {
         super(props);
         const rootStore = this.props.rootStore;
-        rootStore.axiosStore.create();
-        this.getTodoList();
+        rootStore.axiosStore.create().then(() => {
+            this.getTodoList();
+        });
     };
 
     private getTodoList = () => {
@@ -60,6 +61,10 @@ export default class MainScreen extends Component<Props> {
         this.props.navigation.navigate('Login');
     }
 
+    private handlePressFab = () => {
+        ToastAndroid.show('FAB', ToastAndroid.SHORT);
+    }
+
     render() {
         const rootStore = this.props.rootStore;
         return (
@@ -79,10 +84,17 @@ export default class MainScreen extends Component<Props> {
                 <View style={styles.content}>
                     <Text style={styles.contentText}>
                         {rootStore.todoStore.todoList.map((item) => (
-                            rootStore.searchStore.searchWord.trim() !== '' ? (item.content.includes(rootStore.searchStore.searchWord.trim()) ? <Text key={item.id}>{item.content}</Text> : '' ) : <Text key={item.id}>{item.content}</Text>
+                            rootStore.searchStore.searchWord.trim() !== ''
+                            ? (item.content.includes(rootStore.searchStore.searchWord.trim())
+                            ? <Text key={item.id}>{item.content}</Text> : '' )
+                            : <Text key={item.id}>{item.content}</Text>
                         ))}
                     </Text>
                 </View>
+                <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressFab} style={styles.fab}>
+                    <Icon name='lens' size={56} color='#BD93F9' />
+                    <Icon style={styles.addIcon} name='add' size={24} color='#FFFFFF'/>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -134,5 +146,17 @@ const styles = StyleSheet.create({
     },
     contentText: {
         color: '#F8F8F2',
+    },
+    fab: {
+        position: 'absolute',
+        width: 56,
+        height: 56,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 16,
+        bottom: 16,
+    },
+    addIcon: {
+        position: 'absolute',
     },
 });
