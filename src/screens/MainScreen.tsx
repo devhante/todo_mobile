@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ToastAndroid, TextInput, AsyncStorage, TouchableOpacity } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import axios, { AxiosResponse, AxiosError } from 'axios';
 import RootStore from '../stores/rootStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import TodoItem from '../components/TodoItem';
 
 type Props = {
-    rootStore: RootStore;
+    rootStore?: RootStore;
 };
 
 @inject('rootStore')
@@ -14,14 +14,14 @@ type Props = {
 export default class MainScreen extends Component<Props> {
     constructor(props: Props) {
         super(props);
-        const rootStore = this.props.rootStore;
+        const rootStore = this.props.rootStore as RootStore;
         rootStore.axiosStore.create().then(() => {
             this.getTodoList();
         });
     };
 
     private getTodoList = () => {
-        const rootStore = this.props.rootStore;
+        const rootStore = this.props.rootStore as RootStore;
         rootStore.axiosStore.instance.get('todo/')
         .then((response) => {
             rootStore.todoStore.setTodoList(response.data);
@@ -34,7 +34,7 @@ export default class MainScreen extends Component<Props> {
     }
 
     private handleChangeSearch = (value: string) => {
-        const rootStore = this.props.rootStore;
+        const rootStore = this.props.rootStore as RootStore;
         rootStore.searchStore.setSearchWord(value);
     };
 
@@ -43,7 +43,7 @@ export default class MainScreen extends Component<Props> {
     };
 
     private handlePressLogout = () => {
-        const rootStore = this.props.rootStore;
+        const rootStore = this.props.rootStore as RootStore;
         rootStore.appStore.logout();
         this.removeAuthToken();
         this.navigateToLogin();
@@ -66,7 +66,7 @@ export default class MainScreen extends Component<Props> {
     }
 
     render() {
-        const rootStore = this.props.rootStore;
+        const rootStore = this.props.rootStore as RootStore;
         return (
             <View style={styles.container}>
                 <View style={styles.navbar}>
@@ -82,14 +82,12 @@ export default class MainScreen extends Component<Props> {
                     color='#BD93F9' onPress={this.handlePressLogout} />
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.contentText}>
-                        {rootStore.todoStore.todoList.map((item) => (
-                            rootStore.searchStore.searchWord.trim() !== ''
-                            ? (item.content.includes(rootStore.searchStore.searchWord.trim())
-                            ? <Text key={item.id}>{item.content}</Text> : '' )
-                            : <Text key={item.id}>{item.content}</Text>
-                        ))}
-                    </Text>
+                    {rootStore.todoStore.todoList.map((item) => (
+                        rootStore.searchStore.searchWord.trim() !== ''
+                        ? (item.content.includes(rootStore.searchStore.searchWord.trim())
+                        ? <TodoItem key={item.id} id={item.id}/> : '' )
+                        : <TodoItem key={item.id} id={item.id}/>
+                    ))}
                 </View>
                 <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressFab} style={styles.fab}>
                     <Icon name='lens' size={56} color='#BD93F9' />
@@ -118,7 +116,6 @@ const styles = StyleSheet.create({
     content: {
         display: 'flex',
         flexGrow: 1,
-        justifyContent: 'center',
         alignItems: 'center',        
     },
     searchBox: {
@@ -143,9 +140,6 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         width: 280,
         padding: 0,
-    },
-    contentText: {
-        color: '#F8F8F2',
     },
     fab: {
         position: 'absolute',

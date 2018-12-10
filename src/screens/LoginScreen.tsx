@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react';
 import RootStore from '../stores/rootStore';
 
 type Props = {
-    rootStore: RootStore;
+    rootStore?: RootStore;
 };
 
 @inject('rootStore')
@@ -15,7 +15,7 @@ type Props = {
 export default class LoginScreen extends Component<Props> {
     constructor(props: Props) {
         super(props);
-        const rootStore = this.props.rootStore;
+        const rootStore = this.props.rootStore as RootStore;
         AsyncStorage.getItem('authToken')
         .then((response) => {
             if(response !== null) {
@@ -39,7 +39,7 @@ export default class LoginScreen extends Component<Props> {
     }
 
     private handlePressLogin = () => {
-        const rootStore = this.props.rootStore;
+        const rootStore = this.props.rootStore as RootStore;
         axios.post('https://practice.alpaca.kr/api/users/login/', {
             username: this.username,
             password: this.password
