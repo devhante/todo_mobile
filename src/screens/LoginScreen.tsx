@@ -16,9 +16,9 @@ export default class LoginScreen extends Component<Props> {
     constructor(props: Props) {
         super(props);
         const rootStore = this.props.rootStore;
-
-        this.getAuthToken((value) => {
-            if(value !== 'none') {
+        AsyncStorage.getItem('authToken')
+        .then((response) => {
+            if(response !== null) {
                 rootStore.appStore.login();
                 this.navigateToMain();
             }
@@ -45,30 +45,15 @@ export default class LoginScreen extends Component<Props> {
             password: this.password
         })
         .then((response: AxiosResponse) => {
-            this.setAuthToken(response.data.authToken);
-            rootStore.appStore.login();
-            this.navigateToMain();
+            AsyncStorage.setItem('authToken', response.data.authToken)
+            .then(() => {
+                rootStore.appStore.login();
+                this.navigateToMain();
+            });
         })
         .catch((err: AxiosError) => {
             this.toastLoginFailed();
         });
-    }
-
-    private setAuthToken = async (value: string) => {
-        try {
-            await AsyncStorage.setItem('authToken', value);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-
-    private getAuthToken = async (callback: (value: string) => void) => {
-        try {
-            let value = await AsyncStorage.getItem('authToken') || 'none';
-            callback(value);
-        } catch (error) {
-            console.log(error.message);
-        }
     }
 
     private navigateToMain = () => {

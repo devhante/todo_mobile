@@ -16,18 +16,32 @@ export default class MainScreen extends Component<Props> {
         super(props);
         const rootStore = this.props.rootStore;
         rootStore.axiosStore.create();
+        this.getTodoList();
     };
 
-    handleChangeSearch = (value: string) => {
+    private getTodoList = () => {
+        const rootStore = this.props.rootStore;
+        rootStore.axiosStore.instance.get('todo/')
+        .then((response) => {
+            rootStore.todoStore.setTodoList(response.data);
+        })
+        .catch((err) => {
+            if(err.response !== undefined) {
+                console.log(err.response);
+            }
+        });
+    }
+
+    private handleChangeSearch = (value: string) => {
         const rootStore = this.props.rootStore;
         rootStore.searchStore.setSearchWord(value);
     };
 
-    handlePressDelete = () => {
+    private handlePressDelete = () => {
         ToastAndroid.show('Delete', ToastAndroid.SHORT);
     };
 
-    handlePressLogout = () => {
+    private handlePressLogout = () => {
         const rootStore = this.props.rootStore;
         rootStore.appStore.logout();
         this.removeAuthToken();
@@ -63,7 +77,11 @@ export default class MainScreen extends Component<Props> {
                     color='#BD93F9' onPress={this.handlePressLogout} />
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.contentText}>Content Text</Text>
+                    <Text style={styles.contentText}>
+                        {rootStore.todoStore.todoList.map((item) => (
+                            rootStore.searchStore.searchWord.trim() !== '' ? (item.content.includes(rootStore.searchStore.searchWord.trim()) ? <Text key={item.id}>{item.content}</Text> : '' ) : <Text key={item.id}>{item.content}</Text>
+                        ))}
+                    </Text>
                 </View>
             </View>
         );
