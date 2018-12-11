@@ -13,6 +13,45 @@ type Props = {
 @inject('rootStore')
 @observer
 export default class TodoItem extends Component<Props> {
+
+    private handleChangeCheckbox = (value: boolean) => {
+        console.log('value는 ' + value);
+
+        if(value === true) {
+            this.complete();
+        } else {
+            this.revert();
+        }
+    }
+
+    private complete = () => {
+        const rootStore = this.props.rootStore as RootStore;
+        rootStore.axiosStore.instance.post('todo/' + this.props.id + '/complete/')
+        .then((response) => {
+            const data = response.data;
+            rootStore.todoStore.completeTodo(data.id, data.completedAt);
+        })
+        .catch((err) => {
+            if(err.response !== undefined) {
+                console.log(err.response);
+            }
+        });
+    }
+
+    private revert = () => {
+        const rootStore = this.props.rootStore as RootStore;
+        rootStore.axiosStore.instance.post('todo/' + this.props.id + '/revert_complete/')
+        .then((response) => {
+            const id = response.data.id;
+            rootStore.todoStore.revertTodo(id);
+        })
+        .catch((err) => {
+            if(err.response !== undefined) {
+                console.log(err.response);
+            }
+        });
+    }
+
     render() {
         const rootStore = this.props.rootStore as RootStore;
 
@@ -68,7 +107,7 @@ export default class TodoItem extends Component<Props> {
                     </Text>
                 </View>
                 <View style={styles.right}>
-                    <CheckBox style={styles.checkbox} />
+                    <CheckBox style={styles.checkbox} value={myTodo.isCompleted} onValueChange={this.handleChangeCheckbox}/>
                     <Icon style={styles.favor} name='favorite' size={22} color='#BD93F9' />
                     <Text style={styles.favorCount}>1</Text>
                 </View>
