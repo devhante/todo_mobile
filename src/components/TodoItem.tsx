@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, CheckBox, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, CheckBox, TouchableOpacity, Alert } from 'react-native';
 import RootStore from '../stores/rootStore';
 import { inject, observer } from 'mobx-react';
 import { TodoSerializer } from '../serializer';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { AxiosResponse } from 'axios';
+import { observable, action, reaction } from 'mobx';
 
 type Props = {
     id: number;
@@ -13,15 +15,43 @@ type Props = {
 @inject('rootStore')
 @observer
 export default class TodoItem extends Component<Props> {
-    private handleChangeCheckbox = (value: boolean) => {
-        if(value === true) {
-            this.complete();
-        } else {
-            this.revert();
+    @observable isDeleted = false;
+
+    private handleDelete = () => {
+        Alert.alert('할 일 삭제하기', '정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.',
+        [
+            {text: '취소', onPress: this.cancelDeleteTodo, style: 'cancel'},
+            {text: '확인', onPress: this.deleteTodo},
+        ],
+        );
+    }
+
+    @action
+    private cancelDeleteTodo = () => {
+        this.isDeleted = false;
+    }
+
+    private deleteTodo = async () => {
+        const rootStore = this.props.rootStore as RootStore;
+        try {
+            const response = await rootStore.axiosStore.instance.delete('todo/' + this.props.id + '/') as AxiosResponse<TodoSerializer>;
+            rootStore.todoStore.deleteTodo(response.data.id);
+        } catch(err) {
+            if(err !== undefined) {
+                console.log(err.response);
+            }
         }
     }
 
-    private complete = async () => {
+    private handleChangeCheckbox = (value: boolean) => {
+        if(value === true) {
+            this.completeTodo();
+        } else {
+            this.revertTodo();
+        }
+    }
+
+    private completeTodo = async () => {
         const rootStore = this.props.rootStore as RootStore;
         try {
             const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/complete/');
@@ -33,7 +63,7 @@ export default class TodoItem extends Component<Props> {
         }
     }
 
-    private revert = async () => {
+    private revertTodo = async () => {
         const rootStore = this.props.rootStore as RootStore;
         try {
             const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/revert_complete/')
@@ -112,11 +142,17 @@ export default class TodoItem extends Component<Props> {
                     </Text>
                 </View>
                 <View style={styles.right}>
-                    <CheckBox style={styles.checkbox} value={myTodo.isCompleted} onValueChange={this.handleChangeCheckbox}/>
-                    <TouchableOpacity activeOpacity={0.7} onPress={this.handleFavor}>
-                        <Icon style={styles.favor} name='favorite' size={22} color='#BD93F9' />
-                    </TouchableOpacity>
-                    <Text style={styles.favorCount}>{myTodo.like}</Text>
+                    {rootStore.deleteStore.isDeletable ? (
+                        <CheckBox style={styles.checkbox} value={this.isDeleted} onValueChange={this.handleDelete}/>
+                    ) : (
+                        <React.Fragment>
+                            <CheckBox style={styles.checkbox} value={myTodo.isCompleted} onValueChange={this.handleChangeCheckbox}/>
+                            <TouchableOpacity activeOpacity={0.7} onPress={this.handleFavor}>
+                                <Icon style={styles.favor} name='favorite' size={22} color='#BD93F9' />
+                            </TouchableOpacity>
+                            <Text style={styles.favorCount}>{myTodo.like}</Text>
+                        </React.Fragment>
+                    ) }
                 </View>
             </View>
         );

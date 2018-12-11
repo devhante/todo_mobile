@@ -14,15 +14,15 @@ type Props = {
 @inject('rootStore')
 @observer
 export default class MainScreen extends Component<Props> {
-    @observable private modalVisible = false;
+    @observable private isModalVisible = false;
     @observable private content = '';
-
+    
     @action private setModalVisible = () => {
-        this.modalVisible = true;
+        this.isModalVisible = true;
     }
 
     @action private setModalInvisible = () => {
-        this.modalVisible = false;
+        this.isModalVisible = false;
         this.content = '';
     }
 
@@ -55,7 +55,8 @@ export default class MainScreen extends Component<Props> {
     };
 
     private handlePressDelete = () => {
-        ToastAndroid.show('Delete', ToastAndroid.SHORT);
+        const rootStore = this.props.rootStore as RootStore;
+        rootStore.deleteStore.allowDelete();
     };
 
     private handlePressLogout = () => {
@@ -119,10 +120,12 @@ export default class MainScreen extends Component<Props> {
                         placeholderTextColor='#BD93F9' underlineColorAndroid='transparent'
                         onChangeText={this.handleChangeSearch} />
                     </View>
-                    <Icon style={styles.deleteIcon} name='delete' size={24}
-                    color='#BD93F9' onPress={this.handlePressDelete} />
-                    <Icon style={styles.logoutIcon} name='exit-to-app' size={24}
-                    color='#BD93F9' onPress={this.handlePressLogout} />
+                    <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressDelete}>
+                        <Icon style={styles.deleteIcon} name='delete' size={24} color='#BD93F9' />
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressLogout}>
+                        <Icon style={styles.logoutIcon} name='exit-to-app' size={24} color='#BD93F9' />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.content}>
                     {rootStore.todoStore.todoList.map((item) => (
@@ -135,7 +138,7 @@ export default class MainScreen extends Component<Props> {
                         <Icon name='lens' size={56} color='#BD93F9' />
                         <Icon style={styles.addIcon} name='add' size={24} color='#FFFFFF'/>
                     </TouchableOpacity>
-                    <Modal animationType='slide' transparent={false} visible={this.modalVisible}
+                    <Modal animationType='slide' transparent={false} visible={this.isModalVisible}
                     onRequestClose = {this.setModalInvisible} >
                         <View style={styles.container}>
                             <View style={styles.navbar}>
