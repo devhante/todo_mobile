@@ -5,6 +5,7 @@ import { observable, action } from 'mobx';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { inject, observer } from 'mobx-react';
 import RootStore from '../stores/rootStore';
+import { UserSerializer } from '../serializer';
 
 type Props = {
     rootStore?: RootStore;
@@ -49,7 +50,7 @@ export default class LoginScreen extends Component<Props> {
     private handlePressLogin = async () => {
         const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await axios.post('https://practice.alpaca.kr/api/users/login/', {
+            const response = await axios.post<UserSerializer>('https://practice.alpaca.kr/api/users/login/', {
                 username: this.username,
                 password: this.password
             });
