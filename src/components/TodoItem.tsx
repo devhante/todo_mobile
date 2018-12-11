@@ -13,10 +13,7 @@ type Props = {
 @inject('rootStore')
 @observer
 export default class TodoItem extends Component<Props> {
-
     private handleChangeCheckbox = (value: boolean) => {
-        console.log('value는 ' + value);
-
         if(value === true) {
             this.complete();
         } else {
@@ -24,32 +21,28 @@ export default class TodoItem extends Component<Props> {
         }
     }
 
-    private complete = () => {
+    private complete = async () => {
         const rootStore = this.props.rootStore as RootStore;
-        rootStore.axiosStore.instance.post('todo/' + this.props.id + '/complete/')
-        .then((response) => {
-            const data = response.data;
-            rootStore.todoStore.completeTodo(data.id, data.completedAt);
-        })
-        .catch((err) => {
-            if(err.response !== undefined) {
+        try {
+            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/complete/');
+            rootStore.todoStore.completeTodo(response.data.id, response.data.completedAt);
+        } catch(err) {
+            if(err !== undefined) {
                 console.log(err.response);
             }
-        });
+        }
     }
 
-    private revert = () => {
+    private revert = async () => {
         const rootStore = this.props.rootStore as RootStore;
-        rootStore.axiosStore.instance.post('todo/' + this.props.id + '/revert_complete/')
-        .then((response) => {
-            const id = response.data.id;
-            rootStore.todoStore.revertTodo(id);
-        })
-        .catch((err) => {
-            if(err.response !== undefined) {
+        try {
+            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/revert_complete/')
+            rootStore.todoStore.revertTodo(response.data.id);
+        } catch(err) {
+            if(err !== undefined) {
                 console.log(err.response);
             }
-        });
+        }
     }
 
     render() {

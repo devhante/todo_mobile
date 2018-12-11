@@ -5,6 +5,7 @@ import RootStore from '../stores/rootStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TodoItem from '../components/TodoItem';
 import { observable, action } from 'mobx';
+import { TodoSerializer } from '../serializer';
 
 type Props = {
     rootStore?: RootStore;
@@ -36,17 +37,16 @@ export default class MainScreen extends Component<Props> {
         this.getTodoList();
     }
 
-    private getTodoList = () => {
+    private getTodoList = async () => {
         const rootStore = this.props.rootStore as RootStore;
-        rootStore.axiosStore.instance.get('todo/')
-        .then((response) => {
+        try {
+            const response = await rootStore.axiosStore.instance.get<TodoSerializer[]>('todo/');
             rootStore.todoStore.setTodoList(response.data);
-        })
-        .catch((err) => {
+        } catch (err) {
             if(err.response !== undefined) {
                 console.log(err.response);
             }
-        });
+        }
     }
 
     private handleChangeSearch = (value: string) => {
@@ -90,19 +90,18 @@ export default class MainScreen extends Component<Props> {
         this.setModalInvisible();
     }
 
-    private addTodo = () => {
+    private addTodo = async () => {
         const rootStore = this.props.rootStore as RootStore;
-        rootStore.axiosStore.instance.post('todo/', {
-            content: this.content
-        })
-        .then((response) => {
+        try {
+            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/', {
+                content: this.content
+            });
             rootStore.todoStore.addTodo(response.data);
-        })
-        .catch((err) => {
+        } catch(err) {
             if(err.response !== undefined) {
                 console.log(err.response);
             }
-        });
+        }
     }
 
     private handleChangeContent = (value: string) => {

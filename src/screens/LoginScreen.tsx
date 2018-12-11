@@ -15,14 +15,7 @@ type Props = {
 export default class LoginScreen extends Component<Props> {
     constructor(props: Props) {
         super(props);
-        const rootStore = this.props.rootStore as RootStore;
-        AsyncStorage.getItem('authToken')
-        .then((response) => {
-            if(response !== null) {
-                rootStore.appStore.login();
-                this.navigateToMain();
-            }
-        });
+        this.checkToken();
     }
 
     @observable private username: string = '';
@@ -38,22 +31,37 @@ export default class LoginScreen extends Component<Props> {
         this.password = value;
     }
 
-    private handlePressLogin = () => {
+    private checkToken = async () => {
         const rootStore = this.props.rootStore as RootStore;
-        axios.post('https://practice.alpaca.kr/api/users/login/', {
-            username: this.username,
-            password: this.password
-        })
-        .then((response: AxiosResponse) => {
-            AsyncStorage.setItem('authToken', response.data.authToken)
-            .then(() => {
+        try {
+            const response = await AsyncStorage.getItem('authToken');
+            if(response !== null) {
                 rootStore.appStore.login();
                 this.navigateToMain();
+            }
+        } catch(err) {
+            if(err !== undefined) {
+                console.log(err.response);
+            }
+        }
+    }
+
+    private handlePressLogin = async () => {
+        const rootStore = this.props.rootStore as RootStore;
+        try {
+            const response = await axios.post('https://practice.alpaca.kr/api/users/login/', {
+                username: this.username,
+                password: this.password
             });
-        })
-        .catch((err: AxiosError) => {
+            await AsyncStorage.setItem('authToken', response.data.authToken);
+            rootStore.appStore.login();
+            this.navigateToMain();
+        } catch(err) {
+            if(err !== undefined) {
+                console.log(err.response);
+            }
             this.toastLoginFailed();
-        });
+        }
     }
 
     private navigateToMain = () => {

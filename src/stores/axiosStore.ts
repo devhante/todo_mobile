@@ -11,30 +11,20 @@ export default class AxiosStore {
         this.rootStore = rootStore;
     }
 
-    // @action
-    // public create = () => {
-    //     return new Promise((resolve) => {
-    //         AsyncStorage.getItem('authToken')
-    //         .then((response) => {
-    //             if(response !== null) {
-    //                 this.rootStore.axiosStore.instance = axios.create({
-    //                     baseURL: 'https://practice.alpaca.kr/api/',
-    //                     headers: {'Authorization': 'Token ' + response }
-    //                 });
-    //             };
-    //             resolve();
-    //         });
-    //     });
-    // }
-
     @action
     public create = async () => {
-        const token = await AsyncStorage.getItem('authToken');
-        if(token !== null) {
-            this.rootStore.axiosStore.instance = axios.create({
-                baseURL: 'https://practice.alpaca.kr/api/',
-                headers: {'Authorization': 'Token ' + token }
-            });
-        }
+        try {
+            const response = await AsyncStorage.getItem('authToken');
+            if(response !== null) {
+                this.rootStore.axiosStore.instance = axios.create({
+                    baseURL: 'https://practice.alpaca.kr/api/',
+                    headers: {'Authorization': 'Token ' + response }
+                });
+            }
+        } catch(err) {
+            if(err !== undefined) {
+                console.log(err.response);
+            }
+        }    
     }
 }
