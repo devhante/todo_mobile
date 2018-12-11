@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, CheckBox } from 'react-native';
+import { View, Text, StyleSheet, CheckBox, TouchableOpacity } from 'react-native';
 import RootStore from '../stores/rootStore';
 import { inject, observer } from 'mobx-react';
 import { TodoSerializer } from '../serializer';
@@ -38,6 +38,18 @@ export default class TodoItem extends Component<Props> {
         try {
             const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/revert_complete/')
             rootStore.todoStore.revertTodo(response.data.id);
+        } catch(err) {
+            if(err !== undefined) {
+                console.log(err.response);
+            }
+        }
+    }
+    
+    private handleFavor = async () => {
+        const rootStore = this.props.rootStore as RootStore;
+        try {
+            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/add_like/');
+            rootStore.todoStore.setLike(response.data.id, response.data.like);
         } catch(err) {
             if(err !== undefined) {
                 console.log(err.response);
@@ -101,8 +113,10 @@ export default class TodoItem extends Component<Props> {
                 </View>
                 <View style={styles.right}>
                     <CheckBox style={styles.checkbox} value={myTodo.isCompleted} onValueChange={this.handleChangeCheckbox}/>
-                    <Icon style={styles.favor} name='favorite' size={22} color='#BD93F9' />
-                    <Text style={styles.favorCount}>1</Text>
+                    <TouchableOpacity activeOpacity={0.7} onPress={this.handleFavor}>
+                        <Icon style={styles.favor} name='favorite' size={22} color='#BD93F9' />
+                    </TouchableOpacity>
+                    <Text style={styles.favorCount}>{myTodo.like}</Text>
                 </View>
             </View>
         );
