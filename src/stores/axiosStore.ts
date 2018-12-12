@@ -1,30 +1,27 @@
+import axios, { AxiosInstance } from "axios";
 import { AsyncStorage } from "react-native";
-import axios, { AxiosInstance } from 'axios';
-import { action, observable, values } from "mobx";
 import RootStore from "./rootStore";
 
 export default class AxiosStore {
-    @observable public instance = axios.create(undefined);
     private rootStore: RootStore;
-
+    public instance: AxiosInstance;
+    
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
+        this.instance = axios.create(undefined);
     }
 
-    @action
     public create = async () => {
         try {
             const response = await AsyncStorage.getItem('authToken');
-            if(response !== null) {
+            if (response !== undefined) {
                 this.rootStore.axiosStore.instance = axios.create({
                     baseURL: 'https://practice.alpaca.kr/api/',
                     headers: {'Authorization': 'Token ' + response }
                 });
             }
-        } catch(err) {
-            if(err !== undefined) {
-                console.log(err.response);
-            }
-        }    
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { AsyncStorage, ToastAndroid, StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { observable, action } from 'mobx';
-import axios, { AxiosResponse, AxiosError } from 'axios';
-import { inject, observer } from 'mobx-react';
-import RootStore from '../stores/rootStore';
-import { UserSerializer } from '../serializer';
+import axios from "axios";
+import { action, observable } from "mobx";
+import { inject, observer } from "mobx-react";
+import React, { Component } from "react";
+import { AsyncStorage, Button, StyleSheet, Text, TextInput, ToastAndroid, View } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { UserSerializer } from "../serializer";
+import RootStore from "../stores/rootStore";
 
 type Props = {
     rootStore?: RootStore;
@@ -14,13 +14,19 @@ type Props = {
 @inject('rootStore')
 @observer
 export default class LoginScreen extends Component<Props> {
+
+    @observable
+    private username: string;
+
+    @observable
+    private password: string;
+
     constructor(props: Props) {
         super(props);
+        this.username = '';
+        this.password = '';
         this.checkToken();
     }
-
-    @observable private username: string = '';
-    @observable private password: string = '';
 
     @action
     private handleChangeUsername = (value: string) => {
@@ -36,14 +42,12 @@ export default class LoginScreen extends Component<Props> {
         const rootStore = this.props.rootStore as RootStore;
         try {
             const response = await AsyncStorage.getItem('authToken');
-            if(response !== null) {
+            if (response !== null) {
                 rootStore.appStore.login();
                 this.navigateToMain();
             }
-        } catch(err) {
-            if(err !== undefined) {
-                console.log(err.response);
-            }
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -57,10 +61,8 @@ export default class LoginScreen extends Component<Props> {
             await AsyncStorage.setItem('authToken', response.data.authToken);
             rootStore.appStore.login();
             this.navigateToMain();
-        } catch(err) {
-            if(err !== undefined) {
-                console.log(err.response);
-            }
+        } catch (error) {
+            console.log(error);
             this.toastLoginFailed();
         }
     }
@@ -107,9 +109,9 @@ const styles = StyleSheet.create({
     },
     top: {
         flex: 1,
-        flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        flexGrow: 1,
     },
     bottom: {
         flex: 1,

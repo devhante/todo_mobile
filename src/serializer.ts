@@ -1,11 +1,11 @@
-export interface UserSerializer {
+interface UserSerializer {
     id: number;
     username: string
     authToken: string;
     name: string;
 }
 
-export class User {
+class User {
     id: number;
     username: string
     authToken: string;
@@ -19,7 +19,7 @@ export class User {
     }
 }
 
-export interface TodoSerializer {
+interface TodoSerializer {
     id: number;
     content: string;
     user: UserSerializer;
@@ -28,3 +28,5 @@ export interface TodoSerializer {
     completedAt: string;
     isCompleted: boolean;
 }
+
+export { UserSerializer, User, TodoSerializer }

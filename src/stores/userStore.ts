@@ -1,14 +1,16 @@
 import { action, observable } from "mobx"
-import { UserSerializer, User } from '../serializer';
 import RootStore from "./rootStore";
+import { User, UserSerializer } from "../serializer";
 
 export default class UserStore {
-    @observable public user: User;
     private rootStore: RootStore;
 
+    @observable
+    public user: User;
+
     constructor(rootStore: RootStore) {
-        this.user = new User({id: 0, username: '', authToken: '', name: ''});
         this.rootStore = rootStore;
+        this.user = new User({id: 0, username: '', authToken: '', name: ''});
     }
 
     @action

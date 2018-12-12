@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { StyleSheet, Button, Text, View, ToastAndroid, TextInput, AsyncStorage, TouchableOpacity, Modal } from 'react-native';
+import { action, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import RootStore from '../stores/rootStore';
+import React, { Component } from 'react';
+import { AsyncStorage, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TodoItem from '../components/TodoItem';
-import { observable, action } from 'mobx';
 import { TodoSerializer } from '../serializer';
+import RootStore from '../stores/rootStore';
 
 type Props = {
     rootStore?: RootStore;
@@ -14,8 +14,12 @@ type Props = {
 @inject('rootStore')
 @observer
 export default class MainScreen extends Component<Props> {
-    @observable private isModalVisible = false;
-    @observable private content = '';
+
+    @observable
+    private isModalVisible = false;
+
+    @observable
+    private content = '';
     
     @action private setModalVisible = () => {
         this.isModalVisible = true;
@@ -42,10 +46,8 @@ export default class MainScreen extends Component<Props> {
         try {
             const response = await rootStore.axiosStore.instance.get<TodoSerializer[]>('todo/');
             rootStore.todoStore.setTodoList(response.data);
-        } catch (err) {
-            if(err.response !== undefined) {
-                console.log(err.response);
-            }
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -78,7 +80,7 @@ export default class MainScreen extends Component<Props> {
         this.props.navigation.navigate('Login');
     }
 
-    private handlePressFab = () => {
+    private handlePressAdd = () => {
         this.setModalVisible();
     }
 
@@ -98,10 +100,8 @@ export default class MainScreen extends Component<Props> {
                 content: this.content
             });
             rootStore.todoStore.addTodo(response.data);
-        } catch(err) {
-            if(err.response !== undefined) {
-                console.log(err.response);
-            }
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -114,7 +114,7 @@ export default class MainScreen extends Component<Props> {
         return (
             <View style={styles.container}>
                 <View style={styles.navbar}>
-                   < View style={styles.searchBox}>
+                   <View style={styles.searchBox}>
                         <Icon style={styles.searchIcon} name='search' size={20} color='#BD93F9' />
                         <TextInput style={styles.searchInput} placeholder='검색'
                         placeholderTextColor='#BD93F9' underlineColorAndroid='transparent'
@@ -134,31 +134,30 @@ export default class MainScreen extends Component<Props> {
                         ? <TodoItem key={item.id} todo={item}/> : '' )
                         : <TodoItem key={item.id} todo={item}/>
                     ))}
-                    <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressFab} style={styles.fab}>
-                        <Icon name='lens' size={56} color='#BD93F9' />
-                        <Icon style={styles.addIcon} name='add' size={24} color='#FFFFFF'/>
-                    </TouchableOpacity>
-                    <Modal animationType='slide' transparent={false} visible={this.isModalVisible}
+                </View>
+                <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressAdd} style={styles.addButton}>
+                    <Icon name='lens' size={56} color='#BD93F9' />
+                    <Icon style={styles.addIcon} name='add' size={24} color='#FFFFFF'/>
+                </TouchableOpacity>
+                <Modal animationType='slide' transparent={false} visible={this.isModalVisible}
                     onRequestClose = {this.setModalInvisible} >
-                        <View style={styles.container}>
-                            <View style={styles.navbar}>
-                                <TouchableOpacity activeOpacity={0.7} onPress={this.handleCancel}>
-                                    <Text style={styles.navbarButton}>취소</Text>
-                                </TouchableOpacity>
-                                <Text style={styles.title}>할 일 추가</Text>
-                                <TouchableOpacity activeOpacity={0.7} onPress={this.handleSave}>
-                                    <Text style={styles.navbarButton}>저장</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.content}>
-                                <TextInput style={styles.contentInput} placeholder='내용'
-                                placeholderTextColor='#BD93F9' underlineColorAndroid='#BD93F9'
-                                onChangeText={this.handleChangeContent} />
-                            </View>
+                    <View style={styles.container}>
+                        <View style={styles.navbar}>
+                            <TouchableOpacity activeOpacity={0.7} onPress={this.handleCancel}>
+                                <Text style={styles.navbarButton}>취소</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.title}>할 일 추가</Text>
+                            <TouchableOpacity activeOpacity={0.7} onPress={this.handleSave}>
+                                <Text style={styles.navbarButton}>저장</Text>
+                            </TouchableOpacity>
                         </View>
-                    </Modal>
-                </View> 
-                
+                        <View style={styles.content}>
+                            <TextInput style={styles.contentInput} placeholder='내용'
+                            placeholderTextColor='#BD93F9' underlineColorAndroid='#BD93F9'
+                            onChangeText={this.handleChangeContent} />
+                        </View>
+                    </View>
+                </Modal>
             </View>
         );
     }
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
         width: 280,
         padding: 0,
     },
-    fab: {
+    addButton: {
         position: 'absolute',
         width: 56,
         height: 56,

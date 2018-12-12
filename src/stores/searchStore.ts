@@ -2,15 +2,18 @@ import { action, observable } from "mobx";
 import RootStore from "./rootStore";
 
 export default class SearchStore {
-  @observable public searchWord = '';
-  private rootStore: RootStore;
+    private rootStore: RootStore;
 
-  constructor(rootStore: RootStore) {
-    this.rootStore = rootStore;
-  }
+    @observable
+    public searchWord: string;
 
-  @action
-  public setSearchWord = (value: string) => {
-    this.rootStore.searchStore.searchWord = value;
-  }
+    constructor(rootStore: RootStore) {
+        this.rootStore = rootStore;
+        this.searchWord = '';
+    }
+
+    @action
+    public setSearchWord = (word: string) => {
+        this.rootStore.searchStore.searchWord = word;
+    }
 }
