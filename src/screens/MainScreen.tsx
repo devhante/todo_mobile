@@ -131,8 +131,8 @@ export default class MainScreen extends Component<Props> {
                     {rootStore.todoStore.todoList.map((item) => (
                         rootStore.searchStore.searchWord.trim() !== ''
                         ? (item.content.includes(rootStore.searchStore.searchWord.trim())
-                        ? <TodoItem key={item.id} id={item.id}/> : '' )
-                        : <TodoItem key={item.id} id={item.id}/>
+                        ? <TodoItem key={item.id} todo={item}/> : '' )
+                        : <TodoItem key={item.id} todo={item}/>
                     ))}
                     <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressFab} style={styles.fab}>
                         <Icon name='lens' size={56} color='#BD93F9' />

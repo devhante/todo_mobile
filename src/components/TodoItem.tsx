@@ -8,7 +8,7 @@ import { AxiosResponse } from 'axios';
 import { observable, action, reaction } from 'mobx';
 
 type Props = {
-    id: number;
+    todo: TodoSerializer;
     rootStore?: RootStore;
 };
 
@@ -34,7 +34,7 @@ export default class TodoItem extends Component<Props> {
     private deleteTodo = async () => {
         const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.delete('todo/' + this.props.id + '/') as AxiosResponse<TodoSerializer>;
+            const response = await rootStore.axiosStore.instance.delete('todo/' + this.props.todo.id + '/') as AxiosResponse<TodoSerializer>;
             rootStore.todoStore.deleteTodo(response.data.id);
         } catch(err) {
             if(err !== undefined) {
@@ -54,7 +54,7 @@ export default class TodoItem extends Component<Props> {
     private completeTodo = async () => {
         const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/complete/');
+            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/complete/');
             rootStore.todoStore.completeTodo(response.data.id, response.data.completedAt);
         } catch(err) {
             if(err !== undefined) {
@@ -66,7 +66,7 @@ export default class TodoItem extends Component<Props> {
     private revertTodo = async () => {
         const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/revert_complete/')
+            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/revert_complete/')
             rootStore.todoStore.revertTodo(response.data.id);
         } catch(err) {
             if(err !== undefined) {
@@ -78,7 +78,7 @@ export default class TodoItem extends Component<Props> {
     private handleFavor = async () => {
         const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.id + '/add_like/');
+            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/add_like/');
             rootStore.todoStore.setLike(response.data.id, response.data.like);
         } catch(err) {
             if(err !== undefined) {
@@ -90,14 +90,7 @@ export default class TodoItem extends Component<Props> {
     render() {
         const rootStore = this.props.rootStore as RootStore;
 
-        let myTodo = new TodoSerializer;
-        rootStore.todoStore.todoList.forEach((item) => {
-            if(item.id === this.props.id) {
-                myTodo = item;
-            }
-        });
-
-        const created = new Date(myTodo.createdAt);
+        const created = new Date(this.props.todo.createdAt);
 
         const createdYear = created.getFullYear();
         const createdMonth = created.getMonth();
@@ -107,7 +100,7 @@ export default class TodoItem extends Component<Props> {
         const createdMinute = created.getMinutes();
         const createdSecond = created.getSeconds();
         
-        const completed = myTodo.isCompleted ? new Date(myTodo.completedAt) : null;
+        const completed = this.props.todo.isCompleted ? new Date(this.props.todo.completedAt) : null;
         
         const completedYear = completed ? completed.getFullYear() : null;
         const completedMonth = completed ? completed.getMonth() : null;
@@ -130,13 +123,13 @@ export default class TodoItem extends Component<Props> {
         return (
             <View style={styles.container}>
                 <View style={styles.left}>
-                    <Text style={styles.content}>{myTodo.content}</Text>
-                    <Text style={styles.todoText}>{myTodo.user.name}</Text>
+                    <Text style={styles.content}>{this.props.todo.content}</Text>
+                    <Text style={styles.todoText}>{this.props.todo.user.name}</Text>
                     <Text style={styles.todoText}>
                         {createdYear}년 {createdMonth}월 {createdDate}일 {createdAmpm} {createdHour}시 {createdMinute}분 {createdSecond}초에 생성됨
                     </Text>
                     <Text style={styles.todoText}>
-                        {myTodo.isCompleted ? (
+                        {this.props.todo.isCompleted ? (
                             `${completedYear}년 ${completedMonth}월 ${completedDate}일 ${completedAmpm} ${completedHour}시 ${completedMinute}분 ${completedSecond}초에 완료됨`
                         ) : ('')}
                     </Text>
@@ -146,11 +139,11 @@ export default class TodoItem extends Component<Props> {
                         <CheckBox style={styles.checkbox} value={this.isDeleted} onValueChange={this.handleDelete}/>
                     ) : (
                         <React.Fragment>
-                            <CheckBox style={styles.checkbox} value={myTodo.isCompleted} onValueChange={this.handleChangeCheckbox}/>
+                            <CheckBox style={styles.checkbox} value={this.props.todo.isCompleted} onValueChange={this.handleChangeCheckbox}/>
                             <TouchableOpacity activeOpacity={0.7} onPress={this.handleFavor}>
                                 <Icon style={styles.favor} name='favorite' size={22} color='#BD93F9' />
                             </TouchableOpacity>
-                            <Text style={styles.favorCount}>{myTodo.like}</Text>
+                            <Text style={styles.favorCount}>{this.props.todo.like}</Text>
                         </React.Fragment>
                     ) }
                 </View>
