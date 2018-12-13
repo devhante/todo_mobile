@@ -79,7 +79,7 @@ export default class LoginScreen extends Component<Props> {
             <View style={styles.container}>
                 <View style={styles.container}>
                     <View style={styles.top}>
-                        <Icon style={styles.icon} name="done" size={60} color='#8BE9FD' />
+                        <Icon style={styles.icon} name="done" size={60} color='#BD93F9' />
                         <Text style={styles.title}>To-do List App</Text>
                     </View>
                     <View style={styles.bottom}>
@@ -91,7 +91,7 @@ export default class LoginScreen extends Component<Props> {
                         placeholderTextColor='#F8F8F2' underlineColorAndroid='#F8F8F2'
                         textContentType='password' secureTextEntry={true}
                         onChangeText={this.handleChangePassword} />
-                        <Button color='#8BE9FD' title="Login" onPress={this.handlePressLogin} />
+                        <Button color='#BD93F9' title="Login" onPress={this.handlePressLogin} />
                     </View>
                 </View>
                 {this.props.rootStore!.loadingStore.isLoading ? (
