@@ -12,12 +12,11 @@ type Props = {
 @observer
 export default class TodoList extends Component<Props> {
     render() {
-        const rootStore = this.props.rootStore as RootStore;
         return (
             <View style={styles.content}>
-                {rootStore.todoStore.todoList.map((item) => (
-                    rootStore.searchStore.searchWord.trim() !== ''
-                    ? (item.content.includes(rootStore.searchStore.searchWord.trim())
+                {this.props.rootStore!.todoStore.todoList.map((item) => (
+                    this.props.rootStore!.searchStore.searchWord.trim() !== ''
+                    ? (item.content.includes(this.props.rootStore!.searchStore.searchWord.trim())
                     ? <TodoItem key={item.id} todo={item}/> : <React.Fragment key={item.id} /> )
                     : <TodoItem key={item.id} todo={item}/>
                 ))}

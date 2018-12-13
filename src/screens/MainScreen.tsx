@@ -20,23 +20,20 @@ export default class MainScreen extends Component<Props> {
     };
 
     private createAxiosAndGetTodoList = async () => {
-        const rootStore = this.props.rootStore as RootStore;
-        await rootStore.axiosStore.create();
+        await this.props.rootStore!.axiosStore.create();
         this.getTodoList();
     }
 
     private getTodoList = async () => {
-        const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.get<TodoSerializer[]>('todo/');
-            rootStore.todoStore.setTodoList(response.data);
+            const response = await this.props.rootStore!.axiosStore.instance.get<TodoSerializer[]>('todo/');
+            this.props.rootStore!.todoStore.setTodoList(response.data);
         } catch (error) {
             console.log(error);
         }
     }
 
     render() {
-        const rootStore = this.props.rootStore as RootStore;
         return (
             <View style={styles.container}>
                 <NavBar navigation={this.props.navigation}/>

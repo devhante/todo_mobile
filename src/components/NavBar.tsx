@@ -14,18 +14,15 @@ type Props = {
 export default class NavBar extends Component<Props> {
 
     private handleChangeSearch = (value: string) => {
-        const rootStore = this.props.rootStore as RootStore;
-        rootStore.searchStore.setSearchWord(value);
+        this.props.rootStore!.searchStore.setSearchWord(value);
     };
 
     private handlePressDelete = () => {
-        const rootStore = this.props.rootStore as RootStore;
-        rootStore.deleteStore.allowDelete();
+        this.props.rootStore!.deleteStore.allowDelete();
     };
 
     private handlePressLogout = () => {
-        const rootStore = this.props.rootStore as RootStore;
-        rootStore.appStore.logout();
+        this.props.rootStore!.appStore.logout();
         this.removeAuthToken();
         this.navigateToLogin();
     };

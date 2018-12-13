@@ -23,10 +23,9 @@ export default class TodoItem extends Component<Props> {
     }
 
     private deleteTodo = async () => {
-        const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.delete('todo/' + this.props.todo.id + '/') as AxiosResponse<TodoSerializer>;
-            rootStore.todoStore.deleteTodo(response.data.id);
+            const response = await this.props.rootStore!.axiosStore.instance.delete('todo/' + this.props.todo.id + '/') as AxiosResponse<TodoSerializer>;
+            this.props.rootStore!.todoStore.deleteTodo(response.data.id);
         } catch (error) {
             console.log(error);
         }
@@ -41,38 +40,33 @@ export default class TodoItem extends Component<Props> {
     }
 
     private completeTodo = async () => {
-        const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/complete/');
-            rootStore.todoStore.completeTodo(response.data.id, response.data.completedAt);
+            const response = await this.props.rootStore!.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/complete/');
+            this.props.rootStore!.todoStore.completeTodo(response.data.id, response.data.completedAt);
         } catch (error) {
             console.log(error);
         }
     }
 
     private revertTodo = async () => {
-        const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/revert_complete/')
-            rootStore.todoStore.revertTodo(response.data.id);
+            const response = await this.props.rootStore!.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/revert_complete/')
+            this.props.rootStore!.todoStore.revertTodo(response.data.id);
         } catch (error) {
             console.log(error);
         }
     }
     
     private handleFavor = async () => {
-        const rootStore = this.props.rootStore as RootStore;
         try {
-            const response = await rootStore.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/add_like/');
-            rootStore.todoStore.setLike(response.data.id, response.data.like);
+            const response = await this.props.rootStore!.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/add_like/');
+            this.props.rootStore!.todoStore.setLike(response.data.id, response.data.like);
         } catch (error) {
             console.log(error);
         }
     }
 
     render() {
-        const rootStore = this.props.rootStore as RootStore;
-
         const created = new Date(this.props.todo.createdAt);
         const createdYear = created.getFullYear();
         const createdMonth = created.getMonth();
@@ -116,7 +110,7 @@ export default class TodoItem extends Component<Props> {
                     </Text>
                 </View>
                 <View style={styles.right}>
-                    {rootStore.deleteStore.isDeletable ? (
+                    {this.props.rootStore!.deleteStore.isDeletable ? (
                         <TouchableOpacity activeOpacity={0.7} onPress={this.handleDelete}>
                             <Icon name="check-box-outline-blank" size={22} color="#BD93F9"/>
                         </TouchableOpacity>

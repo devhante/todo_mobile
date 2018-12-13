@@ -39,11 +39,10 @@ export default class LoginScreen extends Component<Props> {
     }
 
     private checkToken = async () => {
-        const rootStore = this.props.rootStore as RootStore;
         try {
             const response = await AsyncStorage.getItem('authToken');
             if (response !== null) {
-                rootStore.appStore.login();
+                this.props.rootStore!.appStore.login();
                 this.navigateToMain();
             }
         } catch (error) {
@@ -52,14 +51,13 @@ export default class LoginScreen extends Component<Props> {
     }
 
     private handlePressLogin = async () => {
-        const rootStore = this.props.rootStore as RootStore;
         try {
             const response = await axios.post<UserSerializer>('https://practice.alpaca.kr/api/users/login/', {
                 username: this.username,
                 password: this.password
             });
             await AsyncStorage.setItem('authToken', response.data.authToken);
-            rootStore.appStore.login();
+            this.props.rootStore!.appStore.login();
             this.navigateToMain();
         } catch (error) {
             console.log(error);
