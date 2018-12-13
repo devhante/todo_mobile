@@ -1,4 +1,4 @@
-import { inject, observer } from 'mobx-react';
+import { inject } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -10,7 +10,6 @@ type Props = {
 };
 
 @inject('rootStore')
-@observer
 export default class AddButton extends Component<Props> {
 
     private handlePressAdd = () => {

@@ -12,7 +12,6 @@ type Props = {
 };
 
 @inject('rootStore')
-@observer
 export default class MainScreen extends Component<Props> {
     constructor(props: Props) {
         super(props);
