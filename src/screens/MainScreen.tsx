@@ -1,8 +1,9 @@
-import { inject, observer } from 'mobx-react';
+import { inject } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import AddButton from '../components/AddButton';
 import NavBar from '../components/NavBar';
+import ProgressText from '../components/ProgressText';
 import TodoList from '../components/TodoList';
 import { TodoSerializer } from '../serializer';
 import RootStore from '../stores/rootStore';
@@ -36,6 +37,7 @@ export default class MainScreen extends Component<Props> {
         return (
             <View style={styles.container}>
                 <NavBar navigation={this.props.navigation}/>
+                <ProgressText />
                 <TodoList />
                 <AddButton />  
             </View>
