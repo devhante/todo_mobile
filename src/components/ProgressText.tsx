@@ -1,3 +1,4 @@
+import { computed } from "mobx";
 import { inject, observer } from "mobx-react";
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -10,19 +11,37 @@ type Props = {
 @inject('rootStore')
 @observer
 export default class ProgressText extends Component<Props> {
-    render() {
-        const count = this.props.rootStore!.todoStore.todoList.length
-        let completedCount = 0;
+
+    @computed
+    get count() {
+        return this.props.rootStore!.todoStore.todoList.length;
+    };
+
+    @computed
+    get completedCount() {
+        let value = 0;
         this.props.rootStore!.todoStore.todoList.forEach((item) => {
             if(item.isCompleted) {
-                completedCount++;
+                value++;
             }
         });
+        return value;
+    }
 
+    @computed
+    get percent() {
+        if(this.count === 0) {
+            return 0;
+        } else {
+            return Math.ceil(this.completedCount / this.count * 10000) / 100;
+        }
+    }
+
+    render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>
-                    {count === 0 ? 0 : Math.ceil(completedCount / count * 10000) / 100}% 완료되었습니다. ({count}개 중 {completedCount}개 완료)
+                    {this.percent}% 완료되었습니다. ({this.count}개 중 {this.completedCount}개 완료)
                 </Text>
             </View>
         );
