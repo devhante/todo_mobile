@@ -1,6 +1,6 @@
 import { inject } from 'mobx-react';
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import AddButton from '../components/AddButton';
 import NavBar from '../components/NavBar';
 import ProgressText from '../components/ProgressText';
@@ -26,9 +26,12 @@ export default class MainScreen extends Component<Props> {
 
     private getTodoList = async () => {
         try {
+            this.props.rootStore!.loadingStore.startLoading();
             const response = await this.props.rootStore!.axiosStore.instance.get<TodoSerializer[]>('todo/');
+            this.props.rootStore!.loadingStore.endLoading();
             this.props.rootStore!.todoStore.setTodoList(response.data);
         } catch (error) {
+            this.props.rootStore!.loadingStore.endLoading();
             console.log(error);
         }
     }
@@ -39,7 +42,12 @@ export default class MainScreen extends Component<Props> {
                 <NavBar navigation={this.props.navigation}/>
                 <ProgressText />
                 <TodoList />
-                <AddButton />  
+                <AddButton />
+                {this.props.rootStore!.loadingStore.isLoading ? (
+                    <ActivityIndicator style={styles.loadingIndicator} size='large'/>
+                ) : (
+                    <React.Fragment />
+                )}  
             </View>
         );
     }
@@ -48,7 +56,13 @@ export default class MainScreen extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: '100%',
         backgroundColor: '#282A36',
-    }
+        
+    },
+    loadingIndicator: {
+        position: 'absolute',
+    },
 });

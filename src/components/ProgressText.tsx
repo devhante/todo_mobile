@@ -1,10 +1,6 @@
-import axios from "axios";
-import { action, observable } from "mobx";
 import { inject, observer } from "mobx-react";
 import React, { Component } from "react";
-import { AsyncStorage, Button, StyleSheet, Text, TextInput, ToastAndroid, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { UserSerializer } from "../serializer";
+import { StyleSheet, Text, View } from "react-native";
 import RootStore from "../stores/rootStore";
 
 type Props = {
@@ -38,6 +34,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 8,
     },
     text: {
         color: '#F8F8F2',

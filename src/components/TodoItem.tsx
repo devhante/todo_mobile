@@ -24,9 +24,12 @@ export default class TodoItem extends Component<Props> {
 
     private deleteTodo = async () => {
         try {
+            this.props.rootStore!.loadingStore.startLoading();
             const response = await this.props.rootStore!.axiosStore.instance.delete('todo/' + this.props.todo.id + '/') as AxiosResponse<TodoSerializer>;
+            this.props.rootStore!.loadingStore.endLoading();
             this.props.rootStore!.todoStore.deleteTodo(response.data.id);
         } catch (error) {
+            this.props.rootStore!.loadingStore.endLoading();
             console.log(error);
         }
     }
@@ -41,27 +44,36 @@ export default class TodoItem extends Component<Props> {
 
     private completeTodo = async () => {
         try {
+            this.props.rootStore!.loadingStore.startLoading();
             const response = await this.props.rootStore!.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/complete/');
+            this.props.rootStore!.loadingStore.endLoading();
             this.props.rootStore!.todoStore.completeTodo(response.data.id, response.data.completedAt);
         } catch (error) {
+            this.props.rootStore!.loadingStore.endLoading();
             console.log(error);
         }
     }
 
     private revertTodo = async () => {
         try {
+            this.props.rootStore!.loadingStore.startLoading();
             const response = await this.props.rootStore!.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/revert_complete/')
+            this.props.rootStore!.loadingStore.endLoading();
             this.props.rootStore!.todoStore.revertTodo(response.data.id);
         } catch (error) {
+            this.props.rootStore!.loadingStore.endLoading();
             console.log(error);
         }
     }
     
     private handleFavor = async () => {
         try {
+            this.props.rootStore!.loadingStore.startLoading();
             const response = await this.props.rootStore!.axiosStore.instance.post<TodoSerializer>('todo/' + this.props.todo.id + '/add_like/');
+            this.props.rootStore!.loadingStore.endLoading();
             this.props.rootStore!.todoStore.setLike(response.data.id, response.data.like);
         } catch (error) {
+            this.props.rootStore!.loadingStore.endLoading();
             console.log(error);
         }
     }
@@ -101,7 +113,7 @@ export default class TodoItem extends Component<Props> {
 
         return (
             <View style={styles.container}>
-                <View>
+                <View style={styles.left}>
                     <Text style={styles.contentText}>{this.props.todo.content}</Text>
                     <Text style={styles.otherText}>{this.props.todo.user.name}</Text>
                     <Text style={styles.otherText}>{createdText}</Text>
@@ -136,6 +148,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         padding: 16,
+    },
+    left: {
+        maxWidth: '75%',
     },
     right: {
         display: 'flex',

@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import TodoItem from '../components/TodoItem';
 import RootStore from '../stores/rootStore';
 
@@ -13,14 +13,14 @@ type Props = {
 export default class TodoList extends Component<Props> {
     render() {
         return (
-            <View style={styles.content}>
+            <ScrollView style={styles.content}>
                 {this.props.rootStore!.todoStore.todoList.map((item) => (
                     this.props.rootStore!.searchStore.searchWord.trim() !== ''
                     ? (item.content.includes(this.props.rootStore!.searchStore.searchWord.trim())
                     ? <TodoItem key={item.id} todo={item}/> : <React.Fragment key={item.id} /> )
                     : <TodoItem key={item.id} todo={item}/>
                 ))}
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
     content: {
         display: 'flex',
         flexGrow: 1,
-        alignItems: 'center',        
+        width: '100%',
     },  
 });

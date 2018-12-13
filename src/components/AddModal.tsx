@@ -23,11 +23,14 @@ export default class AddModal extends Component<Props> {
 
     private addTodo = async () => {
         try {
+            this.props.rootStore!.loadingStore.startLoading();
             const response = await this.props.rootStore!.axiosStore.instance.post<TodoSerializer>('todo/', {
                 content: this.props.rootStore!.modalStore.content
             });
+            this.props.rootStore!.loadingStore.endLoading();
             this.props.rootStore!.todoStore.addTodo(response.data);
         } catch (error) {
+            this.props.rootStore!.loadingStore.endLoading();
             console.log(error);
         }
     }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { action, observable } from "mobx";
 import { inject, observer } from "mobx-react";
 import React, { Component } from "react";
-import { AsyncStorage, Button, StyleSheet, Text, TextInput, ToastAndroid, View } from "react-native";
+import { ActivityIndicator, AsyncStorage, Button, StyleSheet, Text, TextInput, ToastAndroid, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { UserSerializer } from "../serializer";
 import RootStore from "../stores/rootStore";
@@ -51,13 +51,16 @@ export default class LoginScreen extends Component<Props> {
 
     private handlePressLogin = async () => {
         try {
+            this.props.rootStore!.loadingStore.startLoading();
             const response = await axios.post<UserSerializer>('https://practice.alpaca.kr/api/users/login/', {
                 username: this.username,
                 password: this.password
             });
             await AsyncStorage.setItem('authToken', response.data.authToken);
+            this.props.rootStore!.loadingStore.endLoading();
             this.navigateToMain();
         } catch (error) {
+            this.props.rootStore!.loadingStore.endLoading();
             console.log(error);
             this.toastLoginFailed();
         }
@@ -75,22 +78,27 @@ export default class LoginScreen extends Component<Props> {
         return (
             <View style={styles.container}>
                 <View style={styles.container}>
-                <View style={styles.top}>
-                    <Icon style={styles.icon} name="done" size={60} color='#8BE9FD' />
-                    <Text style={styles.title}>To-do List App</Text>
+                    <View style={styles.top}>
+                        <Icon style={styles.icon} name="done" size={60} color='#8BE9FD' />
+                        <Text style={styles.title}>To-do List App</Text>
+                    </View>
+                    <View style={styles.bottom}>
+                        <TextInput style={styles.username} placeholder='Username'
+                        placeholderTextColor='#F8F8F2' underlineColorAndroid='#F8F8F2'
+                        textContentType='username' secureTextEntry={false}
+                        onChangeText={this.handleChangeUsername} />
+                        <TextInput style={styles.password} placeholder='Password'
+                        placeholderTextColor='#F8F8F2' underlineColorAndroid='#F8F8F2'
+                        textContentType='password' secureTextEntry={true}
+                        onChangeText={this.handleChangePassword} />
+                        <Button color='#8BE9FD' title="Login" onPress={this.handlePressLogin} />
+                    </View>
                 </View>
-                <View style={styles.bottom}>
-                    <TextInput style={styles.username} placeholder='Username'
-                    placeholderTextColor='#F8F8F2' underlineColorAndroid='#F8F8F2'
-                    textContentType='username' secureTextEntry={false}
-                    onChangeText={this.handleChangeUsername} />
-                    <TextInput style={styles.password} placeholder='Password'
-                    placeholderTextColor='#F8F8F2' underlineColorAndroid='#F8F8F2'
-                    textContentType='password' secureTextEntry={true}
-                    onChangeText={this.handleChangePassword} />
-                    <Button color='#8BE9FD' title="Login" onPress={this.handlePressLogin} />
-                </View>
-                </View>
+                {this.props.rootStore!.loadingStore.isLoading ? (
+                    <ActivityIndicator style={styles.loadingIndicator} size='large'/>
+                ) : (
+                    <React.Fragment />
+                )}
             </View>
         );
     }
@@ -130,4 +138,7 @@ const styles = StyleSheet.create({
         width: 300,
         marginBottom: 48,
     },
-  });
+    loadingIndicator: {
+        position: 'absolute',
+    },
+});
