@@ -131,14 +131,14 @@ export default class MainScreen extends Component<Props> {
                     {rootStore.todoStore.todoList.map((item) => (
                         rootStore.searchStore.searchWord.trim() !== ''
                         ? (item.content.includes(rootStore.searchStore.searchWord.trim())
-                        ? <TodoItem key={item.id} todo={item}/> : '' )
+                        ? <TodoItem key={item.id} todo={item}/> : <React.Fragment key={item.id} /> )
                         : <TodoItem key={item.id} todo={item}/>
                     ))}
-                </View>
-                <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressAdd} style={styles.addButton}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressAdd} style={styles.addButton}>
                     <Icon name='lens' size={56} color='#BD93F9' />
                     <Icon style={styles.addIcon} name='add' size={24} color='#FFFFFF'/>
-                </TouchableOpacity>
+                    </TouchableOpacity>
+                </View>
                 <Modal animationType='slide' transparent={false} visible={this.isModalVisible}
                     onRequestClose = {this.setModalInvisible} >
                     <View style={styles.container}>
