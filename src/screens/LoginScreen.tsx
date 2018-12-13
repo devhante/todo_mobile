@@ -42,7 +42,6 @@ export default class LoginScreen extends Component<Props> {
         try {
             const response = await AsyncStorage.getItem('authToken');
             if (response !== null) {
-                this.props.rootStore!.appStore.login();
                 this.navigateToMain();
             }
         } catch (error) {
@@ -57,7 +56,6 @@ export default class LoginScreen extends Component<Props> {
                 password: this.password
             });
             await AsyncStorage.setItem('authToken', response.data.authToken);
-            this.props.rootStore!.appStore.login();
             this.navigateToMain();
         } catch (error) {
             console.log(error);

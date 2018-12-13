@@ -22,7 +22,6 @@ export default class NavBar extends Component<Props> {
     };
 
     private handlePressLogout = () => {
-        this.props.rootStore!.appStore.logout();
         this.removeAuthToken();
         this.navigateToLogin();
     };
