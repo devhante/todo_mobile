@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { TodoSerializer } from '../serializer';
 import RootStore from '../stores/rootStore';
 
@@ -17,8 +17,18 @@ export default class AddModal extends Component<Props> {
     }
     
     private handleSave = () => {
-        this.addTodo();
+        if(this.props.rootStore!.modalStore.content.length > 100) {
+            this.openAlertFailed();
+        } else {
+            this.addTodo();
+        }
         this.props.rootStore!.modalStore.setModalInvisible();
+    }
+
+    private openAlertFailed = () => {
+        Alert.alert('할 일 추가에 실패했습니다.', '할 일의 내용이 너무 깁니다. 100자 이내의 내용만 추가할 수 있습니다.', [
+            {text: '확인'},
+        ]);
     }
 
     private addTodo = async () => {
