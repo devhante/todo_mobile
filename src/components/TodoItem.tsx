@@ -132,7 +132,7 @@ export default class TodoItem extends Component<Props> {
                                 <Icon name={this.props.todo.isCompleted ? "check-box" : "check-box-outline-blank"} size={22} color="#BD93F9"/>
                             </TouchableOpacity>
                             <TouchableOpacity activeOpacity={0.7} onPress={this.handleFavor}>
-                                <Icon style={styles.favor} name="favorite" size={22} color="#BD93F9"/>
+                                <Icon style={styles.favor} name={this.props.todo.like === 0 ? 'favorite-border' : 'favorite'} size={22} color="#BD93F9"/>
                             </TouchableOpacity>
                             <Text style={styles.favorCount}>{this.props.todo.like}</Text>
                         </React.Fragment>
