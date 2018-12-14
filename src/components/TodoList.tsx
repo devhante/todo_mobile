@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import TodoItem from '../components/TodoItem';
 import RootStore from '../stores/rootStore';
 
@@ -20,6 +20,7 @@ export default class TodoList extends Component<Props> {
                     ? <TodoItem key={item.id} todo={item}/> : <React.Fragment key={item.id} /> )
                     : <TodoItem key={item.id} todo={item}/>
                 ))}
+                <View style={styles.bottom} />
             </ScrollView>
         );
     }
@@ -30,5 +31,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexGrow: 1,
         width: '100%',
-    },  
+    },
+    bottom: {
+        height: 52,
+    }  
 });
