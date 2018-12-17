@@ -35,18 +35,19 @@ export default class LoginScreen extends Component<IStoreInjectedProps> {
         this.password = '';
     }
 
-    public async componentDidMount() {
-        const isTokenExist: Promise<boolean> = this.checkToken();
-        try {
-            if (isTokenExist) {
-                await this.props[STORE_NAME]!.axiosStore.create();
-                this.navigateToMain();
-            } else {
-                this.initialLoading = false;
+    public componentDidMount() {
+        this.checkToken().then(async isTokenExist => {
+            try {
+                if (isTokenExist) {
+                    await this.props[STORE_NAME]!.axiosStore.create();
+                    this.navigateToMain();
+                } else {
+                    this.initialLoading = false;
+                }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
-        }
+        });
     }
 
     @action
@@ -63,9 +64,9 @@ export default class LoginScreen extends Component<IStoreInjectedProps> {
         try {
             const response = await AsyncStorage.getItem('authToken');
             if (response !== null) {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         } catch (error) {
             console.log(error);
             return false;
@@ -106,49 +107,56 @@ export default class LoginScreen extends Component<IStoreInjectedProps> {
     public render() {
         return (
             <View style={styles.container}>
-                <View style={styles.container}>
-                    <View style={styles.top}>
-                        <Icon
-                            style={styles.icon}
-                            name="done"
-                            size={60}
-                            color="#BD93F9"
-                        />
-                        <Text style={styles.title}>To-do List App</Text>
-                    </View>
-                    <View style={styles.bottom}>
-                        <TextInput
-                            style={styles.username}
-                            placeholder="Username"
-                            placeholderTextColor="#F8F8F2"
-                            underlineColorAndroid="#F8F8F2"
-                            textContentType="username"
-                            secureTextEntry={false}
-                            onChangeText={this.handleChangeUsername}
-                        />
-                        <TextInput
-                            style={styles.password}
-                            placeholder="Password"
-                            placeholderTextColor="#F8F8F2"
-                            underlineColorAndroid="#F8F8F2"
-                            textContentType="password"
-                            secureTextEntry={true}
-                            onChangeText={this.handleChangePassword}
-                        />
-                        <Button
-                            color="#BD93F9"
-                            title="Login"
-                            onPress={this.handlePressLogin}
-                        />
-                    </View>
-                </View>
-                {this.props[STORE_NAME]!.loadingStore.isLoading ? (
+                {this.initialLoading ? (
                     <ActivityIndicator
                         style={styles.loadingIndicator}
                         size="large"
                     />
                 ) : (
-                    <React.Fragment />
+                    <React.Fragment>
+                        <View style={styles.top}>
+                            <Icon
+                                style={styles.icon}
+                                name="done"
+                                size={60}
+                                color="#BD93F9"
+                            />
+                            <Text style={styles.title}>To-do List App</Text>
+                        </View>
+                        <View style={styles.bottom}>
+                            <TextInput
+                                style={styles.username}
+                                placeholder="Username"
+                                placeholderTextColor="#F8F8F2"
+                                underlineColorAndroid="#F8F8F2"
+                                textContentType="username"
+                                secureTextEntry={false}
+                                onChangeText={this.handleChangeUsername}
+                            />
+                            <TextInput
+                                style={styles.password}
+                                placeholder="Password"
+                                placeholderTextColor="#F8F8F2"
+                                underlineColorAndroid="#F8F8F2"
+                                textContentType="password"
+                                secureTextEntry={true}
+                                onChangeText={this.handleChangePassword}
+                            />
+                            <Button
+                                color="#BD93F9"
+                                title="Login"
+                                onPress={this.handlePressLogin}
+                            />
+                        </View>
+                        {this.props[STORE_NAME]!.loadingStore.isLoading ? (
+                            <ActivityIndicator
+                                style={styles.loadingIndicator}
+                                size="large"
+                            />
+                        ) : (
+                            <React.Fragment />
+                        )}
+                    </React.Fragment>
                 )}
             </View>
         );
