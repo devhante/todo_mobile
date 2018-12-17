@@ -1,6 +1,7 @@
 import { inject } from 'mobx-react';
 import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
 import AddButton from '../components/AddButton';
 import NavBar from '../components/NavBar';
 import ProgressText from '../components/ProgressText';
@@ -8,9 +9,13 @@ import TodoList from '../components/TodoList';
 import { ITodoSerializer } from '../serializer';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
+interface IProps extends IStoreInjectedProps {
+    navigation: NavigationScreenProp<{}>;
+}
+
 @inject(STORE_NAME)
-export default class MainScreen extends Component<IStoreInjectedProps> {
-    constructor(props: IStoreInjectedProps) {
+export default class MainScreen extends Component<IProps> {
+    constructor(props: IProps) {
         super(props);
         this.createAxiosAndGetTodoList();
     }

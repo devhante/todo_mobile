@@ -13,12 +13,17 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { NavigationScreenProp } from 'react-navigation';
 import { IUserSerializer } from '../serializer';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
+interface IProps extends IStoreInjectedProps {
+    navigation: NavigationScreenProp<{}>;
+}
+
 @inject(STORE_NAME)
 @observer
-export default class LoginScreen extends Component<IStoreInjectedProps> {
+export default class LoginScreen extends Component<IProps> {
     @observable
     private initialLoading: boolean;
 
@@ -28,7 +33,7 @@ export default class LoginScreen extends Component<IStoreInjectedProps> {
     @observable
     private password: string;
 
-    constructor(props: IStoreInjectedProps) {
+    constructor(props: IProps) {
         super(props);
         this.initialLoading = true;
         this.username = '';
