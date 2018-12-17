@@ -2,26 +2,30 @@ import { inject } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 import AddModal from './AddModal';
-import RootStore from '../stores/rootStore';
 
-type Props = {
-    rootStore?: RootStore;
-};
-
-@inject('rootStore')
-export default class AddButton extends Component<Props> {
-
+@inject(STORE_NAME)
+export default class AddButton extends Component<IStoreInjectedProps> {
     private handlePressAdd = () => {
-        this.props.rootStore!.modalStore.setModalVisible();
-    }
+        this.props[STORE_NAME]!.modalStore.setModalVisible();
+    };
 
-    render() {
+    public render() {
         return (
             <React.Fragment>
-                <TouchableOpacity activeOpacity={0.7} onPress={this.handlePressAdd} style={styles.addButton}>
-                    <Icon name='lens' size={56} color='#BD93F9' />
-                    <Icon style={styles.addIcon} name='add' size={24} color='#FFFFFF'/>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={this.handlePressAdd}
+                    style={styles.addButton}
+                >
+                    <Icon name="lens" size={56} color="#BD93F9" />
+                    <Icon
+                        style={styles.addIcon}
+                        name="add"
+                        size={24}
+                        color="#FFFFFF"
+                    />
                 </TouchableOpacity>
                 <AddModal />
             </React.Fragment>
@@ -37,10 +41,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         right: 16,
-        bottom: 16,
+        bottom: 16
     },
     addIcon: {
-        position: 'absolute',
-    },
-    
+        position: 'absolute'
+    }
 });

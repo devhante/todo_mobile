@@ -1,27 +1,22 @@
-import { computed } from "mobx";
-import { inject, observer } from "mobx-react";
-import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import RootStore from "../stores/rootStore";
+import { computed } from 'mobx';
+import { inject, observer } from 'mobx-react';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
-type Props = {
-    rootStore?: RootStore;
-};
-
-@inject('rootStore')
+@inject(STORE_NAME)
 @observer
-export default class ProgressText extends Component<Props> {
-
+export default class ProgressText extends Component<IStoreInjectedProps> {
     @computed
     get count() {
-        return this.props.rootStore!.todoStore.todoList.length;
-    };
+        return this.props[STORE_NAME]!.todoStore.todoList.length;
+    }
 
     @computed
     get completedCount() {
         let value = 0;
-        this.props.rootStore!.todoStore.todoList.forEach((item) => {
-            if(item.isCompleted) {
+        this.props[STORE_NAME]!.todoStore.todoList.forEach(item => {
+            if (item.isCompleted) {
                 value++;
             }
         });
@@ -30,18 +25,19 @@ export default class ProgressText extends Component<Props> {
 
     @computed
     get percent() {
-        if(this.count === 0) {
+        if (this.count === 0) {
             return 0;
         } else {
-            return Math.ceil(this.completedCount / this.count * 10000) / 100;
+            return Math.ceil((this.completedCount / this.count) * 10000) / 100;
         }
     }
 
-    render() {
+    public render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>
-                    {this.percent}% 완료되었습니다. ({this.count}개 중 {this.completedCount}개 완료)
+                    {this.percent}% 완료되었습니다. ({this.count}개 중{' '}
+                    {this.completedCount}개 완료)
                 </Text>
             </View>
         );
@@ -53,9 +49,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 8,
+        padding: 8
     },
     text: {
-        color: '#F8F8F2',
-    },
+        color: '#F8F8F2'
+    }
 });

@@ -5,49 +5,50 @@ import AddButton from '../components/AddButton';
 import NavBar from '../components/NavBar';
 import ProgressText from '../components/ProgressText';
 import TodoList from '../components/TodoList';
-import { TodoSerializer } from '../serializer';
-import RootStore from '../stores/rootStore';
+import { ITodoSerializer } from '../serializer';
+import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
-type Props = {
-    rootStore?: RootStore;
-};
-
-@inject('rootStore')
-export default class MainScreen extends Component<Props> {
-    constructor(props: Props) {
+@inject(STORE_NAME)
+export default class MainScreen extends Component<IStoreInjectedProps> {
+    constructor(props: IStoreInjectedProps) {
         super(props);
         this.createAxiosAndGetTodoList();
-    };
+    }
 
     private createAxiosAndGetTodoList = async () => {
-        await this.props.rootStore!.axiosStore.create();
+        await this.props[STORE_NAME]!.axiosStore.create();
         this.getTodoList();
-    }
+    };
 
     private getTodoList = async () => {
         try {
-            this.props.rootStore!.loadingStore.startLoading();
-            const response = await this.props.rootStore!.axiosStore.instance.get<TodoSerializer[]>('todo/');
-            this.props.rootStore!.loadingStore.endLoading();
-            this.props.rootStore!.todoStore.setTodoList(response.data);
+            this.props[STORE_NAME]!.loadingStore.startLoading();
+            const response = await this.props[
+                STORE_NAME
+            ]!.axiosStore.instance.get<ITodoSerializer[]>('todo/');
+            this.props[STORE_NAME]!.loadingStore.endLoading();
+            this.props[STORE_NAME]!.todoStore.setTodoList(response.data);
         } catch (error) {
-            this.props.rootStore!.loadingStore.endLoading();
+            this.props[STORE_NAME]!.loadingStore.endLoading();
             console.log(error);
         }
-    }
+    };
 
-    render() {
+    public render() {
         return (
             <View style={styles.container}>
-                <NavBar navigation={this.props.navigation}/>
+                <NavBar navigation={this.props.navigation} />
                 <ProgressText />
                 <TodoList />
                 <AddButton />
-                {this.props.rootStore!.loadingStore.isLoading ? (
-                    <ActivityIndicator style={styles.loadingIndicator} size='large'/>
+                {this.props[STORE_NAME]!.loadingStore.isLoading ? (
+                    <ActivityIndicator
+                        style={styles.loadingIndicator}
+                        size="large"
+                    />
                 ) : (
                     <React.Fragment />
-                )}  
+                )}
             </View>
         );
     }
@@ -59,10 +60,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        backgroundColor: '#282A36',
-        
+        backgroundColor: '#282A36'
     },
     loadingIndicator: {
-        position: 'absolute',
-    },
+        position: 'absolute'
+    }
 });

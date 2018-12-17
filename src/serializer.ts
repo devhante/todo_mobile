@@ -1,17 +1,17 @@
-interface UserSerializer {
+interface IUserSerializer {
     id: number;
-    username: string
+    username: string;
     authToken: string;
     name: string;
 }
 
 class User {
-    id: number;
-    username: string
-    authToken: string;
-    name: string;
-    
-    constructor(value: UserSerializer) {
+    public id: number;
+    public username: string;
+    public authToken: string;
+    public name: string;
+
+    constructor(value: IUserSerializer) {
         this.id = value.id;
         this.username = value.username;
         this.authToken = value.authToken;
@@ -19,14 +19,14 @@ class User {
     }
 }
 
-interface TodoSerializer {
+interface ITodoSerializer {
     id: number;
     content: string;
-    user: UserSerializer;
+    user: IUserSerializer;
     like: number;
     createdAt: string;
     completedAt: string;
     isCompleted: boolean;
 }
 
-export { UserSerializer, User, TodoSerializer }
+export { IUserSerializer, User, ITodoSerializer };

@@ -1,11 +1,11 @@
-import { action, observable } from "mobx";
-import RootStore from "./rootStore";
+import { action, observable } from 'mobx';
+import RootStore from './rootStore';
 
 export default class ModalStore {
     private rootStore: RootStore;
 
     @observable
-    public content: string
+    public content: string;
 
     @observable
     public isModalVisible: boolean;
@@ -17,11 +17,11 @@ export default class ModalStore {
     }
 
     @action public setModalVisible = () => {
-        this.isModalVisible = true;
-    }
+        this.rootStore.modalStore.isModalVisible = true;
+    };
 
     @action public setModalInvisible = () => {
-        this.isModalVisible = false;
-        this.content = '';
-    }
+        this.rootStore.modalStore.isModalVisible = false;
+        this.rootStore.modalStore.content = '';
+    };
 }

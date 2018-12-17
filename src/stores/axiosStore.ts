@@ -1,11 +1,11 @@
-import axios, { AxiosInstance } from "axios";
-import { AsyncStorage } from "react-native";
-import RootStore from "./rootStore";
+import axios, { AxiosInstance } from 'axios';
+import { AsyncStorage } from 'react-native';
+import RootStore from './rootStore';
 
 export default class AxiosStore {
     private rootStore: RootStore;
     public instance: AxiosInstance;
-    
+
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
         this.instance = axios.create(undefined);
@@ -17,11 +17,11 @@ export default class AxiosStore {
             if (response !== undefined) {
                 this.rootStore.axiosStore.instance = axios.create({
                     baseURL: 'https://practice.alpaca.kr/api/',
-                    headers: {'Authorization': 'Token ' + response }
+                    headers: { Authorization: 'Token ' + response }
                 });
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 }

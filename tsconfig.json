@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "jsx": "react",
-    "noEmit": true,
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "commonjs",
+        "jsx": "react",
+        "noEmit": true,
 
-    "strict": true,
+        "strict": true,
 
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-  }
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "experimentalDecorators": true
+    }
 }
