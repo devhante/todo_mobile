@@ -15,15 +15,9 @@ interface IProps extends IStoreInjectedProps {
 
 @inject(STORE_NAME)
 export default class MainScreen extends Component<IProps> {
-    constructor(props: IProps) {
-        super(props);
-        this.createAxiosAndGetTodoList();
-    }
-
-    private createAxiosAndGetTodoList = async () => {
-        await this.props[STORE_NAME]!.axiosStore.create();
+    public componentDidMount() {
         this.getTodoList();
-    };
+    }
 
     private getTodoList = async () => {
         try {
