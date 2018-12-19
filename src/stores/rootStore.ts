@@ -1,3 +1,4 @@
+import { configure } from 'mobx';
 import AxiosStore from './axiosStore';
 import DeleteStore from './deleteStore';
 import LoadingStore from './loadingStore';
@@ -5,6 +6,10 @@ import ModalStore from './modalStore';
 import SearchStore from './searchStore';
 import TodoStore from './todoStore';
 import UserStore from './userStore';
+
+configure({
+    enforceActions: 'observed'
+});
 
 export default class RootStore {
     public axiosStore: AxiosStore;

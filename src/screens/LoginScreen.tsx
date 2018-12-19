@@ -40,6 +40,7 @@ export default class LoginScreen extends Component<IProps> {
         this.password = '';
     }
 
+    @action
     public componentDidMount() {
         this.checkToken().then(async isTokenExist => {
             try {
