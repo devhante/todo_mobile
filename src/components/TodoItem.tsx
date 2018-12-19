@@ -33,7 +33,17 @@ export default class TodoItem extends Component<IProps> {
                 'todo/' + this.props.todo.id + '/'
             )) as AxiosResponse<ITodoSerializer>;
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            this.props[STORE_NAME]!.todoStore.deleteTodo(response.data.id);
+            const newTodoList: ITodoSerializer[] = JSON.parse(
+                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
+            );
+            let index = 0;
+            newTodoList.forEach(item => {
+                if (item.id === response.data.id) {
+                    newTodoList.splice(index, 1);
+                }
+                index += 1;
+            });
+            this.props[STORE_NAME]!.todoStore.setTodoList(newTodoList);
         } catch (error) {
             this.props[STORE_NAME]!.loadingStore.endLoading();
             console.log(error);
@@ -57,10 +67,16 @@ export default class TodoItem extends Component<IProps> {
                 'todo/' + this.props.todo.id + '/complete/'
             );
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            this.props[STORE_NAME]!.todoStore.completeTodo(
-                response.data.id,
-                response.data.completedAt
+            const newTodoList: ITodoSerializer[] = JSON.parse(
+                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
             );
+            newTodoList.forEach(item => {
+                if (item.id === response.data.id) {
+                    item.isCompleted = true;
+                    item.completedAt = response.data.completedAt;
+                }
+            });
+            this.props[STORE_NAME]!.todoStore.setTodoList(newTodoList);
         } catch (error) {
             this.props[STORE_NAME]!.loadingStore.endLoading();
             console.log(error);
@@ -76,7 +92,15 @@ export default class TodoItem extends Component<IProps> {
                 'todo/' + this.props.todo.id + '/revert_complete/'
             );
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            this.props[STORE_NAME]!.todoStore.revertTodo(response.data.id);
+            const newTodoList: ITodoSerializer[] = JSON.parse(
+                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
+            );
+            newTodoList.forEach(item => {
+                if (item.id === response.data.id) {
+                    item.isCompleted = false;
+                }
+            });
+            this.props[STORE_NAME]!.todoStore.setTodoList(newTodoList);
         } catch (error) {
             this.props[STORE_NAME]!.loadingStore.endLoading();
             console.log(error);
@@ -92,10 +116,15 @@ export default class TodoItem extends Component<IProps> {
                 'todo/' + this.props.todo.id + '/add_like/'
             );
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            this.props[STORE_NAME]!.todoStore.setLike(
-                response.data.id,
-                response.data.like
+            const newTodoList: ITodoSerializer[] = JSON.parse(
+                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
             );
+            newTodoList.forEach(item => {
+                if (item.id === response.data.id) {
+                    item.like = response.data.like;
+                }
+            });
+            this.props[STORE_NAME]!.todoStore.setTodoList(newTodoList);
         } catch (error) {
             this.props[STORE_NAME]!.loadingStore.endLoading();
             console.log(error);

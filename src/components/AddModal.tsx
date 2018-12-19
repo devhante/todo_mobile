@@ -45,7 +45,11 @@ export default class AddModal extends Component<IStoreInjectedProps> {
                 content: this.props[STORE_NAME]!.modalStore.content
             });
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            this.props[STORE_NAME]!.todoStore.addTodo(response.data);
+            const newTodoList: ITodoSerializer[] = JSON.parse(
+                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
+            );
+            newTodoList.push(response.data);
+            this.props[STORE_NAME]!.todoStore.setTodoList(newTodoList);
         } catch (error) {
             this.props[STORE_NAME]!.loadingStore.endLoading();
             console.log(error);
@@ -53,7 +57,7 @@ export default class AddModal extends Component<IStoreInjectedProps> {
     };
 
     private handleChangeContent = (value: string) => {
-        this.props[STORE_NAME]!.modalStore.content = value;
+        this.props[STORE_NAME]!.modalStore.setContent(value);
     };
 
     public render() {
