@@ -20,10 +20,10 @@ const RootSwitch = createSwitchNavigator(
 );
 
 export default class App extends Component {
+    public rootStore = new RootStore();
     public render() {
-        const rootStore = new RootStore();
         return (
-            <Provider rootStore={rootStore}>
+            <Provider rootStore={this.rootStore}>
                 <RootSwitch />
             </Provider>
         );
