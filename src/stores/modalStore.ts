@@ -16,11 +16,18 @@ export default class ModalStore {
         this.isModalVisible = false;
     }
 
-    @action public setModalVisible = () => {
+    @action
+    public setContent = (content: string) => {
+        this.content = content;
+    };
+
+    @action
+    public setModalVisible = () => {
         this.rootStore.modalStore.isModalVisible = true;
     };
 
-    @action public setModalInvisible = () => {
+    @action
+    public setModalInvisible = () => {
         this.rootStore.modalStore.isModalVisible = false;
         this.rootStore.modalStore.content = '';
     };

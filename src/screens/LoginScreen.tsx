@@ -40,7 +40,6 @@ export default class LoginScreen extends Component<IProps> {
         this.password = '';
     }
 
-    @action
     public componentDidMount() {
         this.checkToken().then(async isTokenExist => {
             try {
@@ -48,13 +47,18 @@ export default class LoginScreen extends Component<IProps> {
                     await this.props[STORE_NAME]!.axiosStore.create();
                     this.navigateToMain();
                 } else {
-                    this.initialLoading = false;
+                    this.setInitialLoading(false);
                 }
             } catch (error) {
                 console.log(error);
             }
         });
     }
+
+    @action
+    private setInitialLoading = (value: boolean) => {
+        this.initialLoading = value;
+    };
 
     @action
     private handleChangeUsername = (value: string) => {
@@ -90,6 +94,7 @@ export default class LoginScreen extends Component<IProps> {
                 }
             );
             await AsyncStorage.setItem('authToken', response.data.authToken);
+            await this.props[STORE_NAME]!.axiosStore.create();
             this.props[STORE_NAME]!.loadingStore.endLoading();
             this.navigateToMain();
         } catch (error) {
