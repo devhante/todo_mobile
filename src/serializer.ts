@@ -5,20 +5,6 @@ interface IUserSerializer {
     name: string;
 }
 
-class User {
-    public id: number;
-    public username: string;
-    public authToken: string;
-    public name: string;
-
-    constructor(value: IUserSerializer) {
-        this.id = value.id;
-        this.username = value.username;
-        this.authToken = value.authToken;
-        this.name = value.name;
-    }
-}
-
 interface ITodoSerializer {
     id: number;
     content: string;
@@ -29,4 +15,4 @@ interface ITodoSerializer {
     isCompleted: boolean;
 }
 
-export { IUserSerializer, User, ITodoSerializer };
+export { IUserSerializer, ITodoSerializer };

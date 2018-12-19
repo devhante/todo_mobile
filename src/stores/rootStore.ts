@@ -5,7 +5,6 @@ import LoadingStore from './loadingStore';
 import ModalStore from './modalStore';
 import SearchStore from './searchStore';
 import TodoStore from './todoStore';
-import UserStore from './userStore';
 
 configure({
     enforceActions: 'observed'
@@ -18,7 +17,6 @@ export default class RootStore {
     public modalStore: ModalStore;
     public searchStore: SearchStore;
     public todoStore: TodoStore;
-    public userStore: UserStore;
 
     constructor() {
         this.axiosStore = new AxiosStore(this);
@@ -27,7 +25,6 @@ export default class RootStore {
         this.modalStore = new ModalStore(this);
         this.searchStore = new SearchStore(this);
         this.todoStore = new TodoStore(this);
-        this.userStore = new UserStore(this);
     }
 }
 
