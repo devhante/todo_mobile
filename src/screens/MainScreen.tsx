@@ -51,9 +51,7 @@ export default class MainScreen extends Component<IProps> {
                         style={styles.loadingIndicator}
                         size="large"
                     />
-                ) : (
-                    <React.Fragment />
-                )}
+                ) : null}
             </View>
         );
     }

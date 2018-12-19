@@ -158,9 +158,7 @@ export default class LoginScreen extends Component<IProps> {
                                 style={styles.loadingIndicator}
                                 size="large"
                             />
-                        ) : (
-                            <React.Fragment />
-                        )}
+                        ) : null}
                     </React.Fragment>
                 )}
             </View>
