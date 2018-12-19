@@ -22,7 +22,7 @@ export default class NavBar extends Component<IProps> {
     };
 
     private handlePressDelete = () => {
-        this.props[STORE_NAME]!.deleteStore.allowDelete();
+        this.props[STORE_NAME]!.deleteStore.changeDeletable();
     };
 
     private handlePressLogout = () => {

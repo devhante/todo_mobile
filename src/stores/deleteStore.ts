@@ -13,8 +13,7 @@ export default class DeleteStore {
     }
 
     @action
-    public allowDelete = () => {
-        // this.isDeletable = true;
+    public changeDeletable = () => {
         this.rootStore.deleteStore.isDeletable = !this.isDeletable;
     };
 
