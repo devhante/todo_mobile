@@ -45,9 +45,9 @@ export default class AddModal extends Component<IStoreInjectedProps> {
                 content: this.props[STORE_NAME]!.modalStore.content
             });
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            const newTodoList: ITodoSerializer[] = JSON.parse(
-                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
-            );
+            const newTodoList: ITodoSerializer[] = [
+                ...this.props[STORE_NAME]!.todoStore.todoList
+            ];
             newTodoList.push(response.data);
             this.props[STORE_NAME]!.todoStore.setTodoList(newTodoList);
         } catch (error) {

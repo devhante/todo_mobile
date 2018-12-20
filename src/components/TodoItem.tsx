@@ -33,9 +33,9 @@ export default class TodoItem extends Component<IProps> {
                 'todo/' + this.props.todo.id + '/'
             )) as AxiosResponse<ITodoSerializer>;
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            const newTodoList: ITodoSerializer[] = JSON.parse(
-                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
-            );
+            const newTodoList: ITodoSerializer[] = [
+                ...this.props[STORE_NAME]!.todoStore.todoList
+            ];
             let index = 0;
             newTodoList.forEach(item => {
                 if (item.id === response.data.id) {
@@ -67,9 +67,9 @@ export default class TodoItem extends Component<IProps> {
                 'todo/' + this.props.todo.id + '/complete/'
             );
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            const newTodoList: ITodoSerializer[] = JSON.parse(
-                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
-            );
+            const newTodoList: ITodoSerializer[] = [
+                ...this.props[STORE_NAME]!.todoStore.todoList
+            ];
             newTodoList.forEach(item => {
                 if (item.id === response.data.id) {
                     item.isCompleted = true;
@@ -92,9 +92,9 @@ export default class TodoItem extends Component<IProps> {
                 'todo/' + this.props.todo.id + '/revert_complete/'
             );
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            const newTodoList: ITodoSerializer[] = JSON.parse(
-                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
-            );
+            const newTodoList: ITodoSerializer[] = [
+                ...this.props[STORE_NAME]!.todoStore.todoList
+            ];
             newTodoList.forEach(item => {
                 if (item.id === response.data.id) {
                     item.isCompleted = false;
@@ -116,9 +116,9 @@ export default class TodoItem extends Component<IProps> {
                 'todo/' + this.props.todo.id + '/add_like/'
             );
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            const newTodoList: ITodoSerializer[] = JSON.parse(
-                JSON.stringify(this.props[STORE_NAME]!.todoStore.todoList)
-            );
+            const newTodoList: ITodoSerializer[] = [
+                ...this.props[STORE_NAME]!.todoStore.todoList
+            ];
             newTodoList.forEach(item => {
                 if (item.id === response.data.id) {
                     item.like = response.data.like;
