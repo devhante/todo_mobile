@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { COLOR_CONSTANTS } from '../constants';
 import { ITodoSerializer } from '../serializer';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
@@ -192,7 +193,7 @@ export default class TodoItem extends Component<IProps> {
                             <Icon
                                 name="check-box-outline-blank"
                                 size={22}
-                                color="#BD93F9"
+                                color={COLOR_CONSTANTS.purple}
                             />
                         </TouchableOpacity>
                     ) : (
@@ -208,7 +209,7 @@ export default class TodoItem extends Component<IProps> {
                                             : 'check-box-outline-blank'
                                     }
                                     size={22}
-                                    color="#BD93F9"
+                                    color={COLOR_CONSTANTS.purple}
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -223,7 +224,7 @@ export default class TodoItem extends Component<IProps> {
                                             : 'favorite'
                                     }
                                     size={22}
-                                    color="#BD93F9"
+                                    color={COLOR_CONSTANTS.purple}
                                 />
                             </TouchableOpacity>
                             <Text style={styles.favorCount}>
@@ -254,18 +255,18 @@ const styles = StyleSheet.create({
         flexGrow: 1
     },
     contentText: {
-        color: '#F8F8F2',
+        color: COLOR_CONSTANTS.foreground,
         fontSize: 16
     },
     otherText: {
-        color: '#F8F8F2',
+        color: COLOR_CONSTANTS.foreground,
         fontSize: 12
     },
     favor: {
         padding: 4
     },
     favorCount: {
-        color: '#BD93F9',
+        color: COLOR_CONSTANTS.purple,
         padding: 4
     }
 });

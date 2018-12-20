@@ -8,6 +8,7 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { COLOR_CONSTANTS } from '../constants';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 interface IProps extends IStoreInjectedProps {
@@ -51,12 +52,12 @@ export default class NavBar extends Component<IProps> {
                         style={styles.searchIcon}
                         name="search"
                         size={20}
-                        color="#BD93F9"
+                        color={COLOR_CONSTANTS.purple}
                     />
                     <TextInput
                         style={styles.searchInput}
                         placeholder="검색"
-                        placeholderTextColor="#BD93F9"
+                        placeholderTextColor={COLOR_CONSTANTS.purple}
                         underlineColorAndroid="transparent"
                         onChangeText={this.handleChangeSearch}
                     />
@@ -69,7 +70,7 @@ export default class NavBar extends Component<IProps> {
                         style={styles.deleteIcon}
                         name="delete"
                         size={24}
-                        color="#BD93F9"
+                        color={COLOR_CONSTANTS.purple}
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -80,7 +81,7 @@ export default class NavBar extends Component<IProps> {
                         style={styles.logoutIcon}
                         name="exit-to-app"
                         size={24}
-                        color="#BD93F9"
+                        color={COLOR_CONSTANTS.purple}
                     />
                 </TouchableOpacity>
             </View>
@@ -96,20 +97,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 48,
         padding: 8,
-        backgroundColor: '#282A36'
+        backgroundColor: COLOR_CONSTANTS.background
     },
     searchBox: {
         display: 'flex',
         flexDirection: 'row',
         flexGrow: 1,
         padding: 8,
-        backgroundColor: '#44475A'
+        backgroundColor: COLOR_CONSTANTS.currentLine
     },
     searchIcon: {
         marginRight: 8
     },
     searchInput: {
-        color: '#BD93F9',
+        color: COLOR_CONSTANTS.purple,
         fontSize: 12,
         fontWeight: '500',
         width: 280,

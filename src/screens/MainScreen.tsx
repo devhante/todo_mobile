@@ -6,6 +6,7 @@ import AddButton from '../components/AddButton';
 import NavBar from '../components/NavBar';
 import ProgressText from '../components/ProgressText';
 import TodoList from '../components/TodoList';
+import { COLOR_CONSTANTS } from '../constants';
 import { ITodoSerializer } from '../serializer';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        backgroundColor: '#282A36'
+        backgroundColor: COLOR_CONSTANTS.background
     },
     loadingIndicator: {
         position: 'absolute'

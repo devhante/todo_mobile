@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import { COLOR_CONSTANTS } from '../constants';
 import { ITodoSerializer } from '../serializer';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
@@ -90,8 +91,8 @@ export default class AddModal extends Component<IStoreInjectedProps> {
                         <TextInput
                             style={styles.contentInput}
                             placeholder="내용"
-                            placeholderTextColor="#BD93F9"
-                            underlineColorAndroid="#BD93F9"
+                            placeholderTextColor={COLOR_CONSTANTS.purple}
+                            underlineColorAndroid={COLOR_CONSTANTS.purple}
                             onChangeText={this.handleChangeContent}
                         />
                     </View>
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         height: '100%',
-        backgroundColor: '#282A36'
+        backgroundColor: COLOR_CONSTANTS.background
     },
     navbar: {
         display: 'flex',
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 48,
         padding: 8,
-        backgroundColor: '#282A36'
+        backgroundColor: COLOR_CONSTANTS.background
     },
     content: {
         display: 'flex',
@@ -122,16 +123,16 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     navbarButton: {
-        color: '#BD93F9',
+        color: COLOR_CONSTANTS.purple,
         padding: 4
     },
     title: {
         flexGrow: 1,
-        color: '#F8F8F2',
+        color: COLOR_CONSTANTS.foreground,
         textAlign: 'center'
     },
     contentInput: {
-        color: '#BD93F9',
+        color: COLOR_CONSTANTS.purple,
         width: '96%'
     }
 });

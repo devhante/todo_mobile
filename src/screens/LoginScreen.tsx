@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationScreenProp } from 'react-navigation';
+import { COLOR_CONSTANTS } from '../constants';
 import { IUserSerializer } from '../serializer';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
@@ -130,7 +131,7 @@ export default class LoginScreen extends Component<IProps> {
                                 style={styles.icon}
                                 name="done"
                                 size={60}
-                                color="#BD93F9"
+                                color={COLOR_CONSTANTS.purple}
                             />
                             <Text style={styles.title}>To-do List App</Text>
                         </View>
@@ -138,8 +139,12 @@ export default class LoginScreen extends Component<IProps> {
                             <TextInput
                                 style={styles.username}
                                 placeholder="Username"
-                                placeholderTextColor="#F8F8F2"
-                                underlineColorAndroid="#F8F8F2"
+                                placeholderTextColor={
+                                    COLOR_CONSTANTS.foreground
+                                }
+                                underlineColorAndroid={
+                                    COLOR_CONSTANTS.foreground
+                                }
                                 textContentType="username"
                                 secureTextEntry={false}
                                 onChangeText={this.handleChangeUsername}
@@ -147,14 +152,18 @@ export default class LoginScreen extends Component<IProps> {
                             <TextInput
                                 style={styles.password}
                                 placeholder="Password"
-                                placeholderTextColor="#F8F8F2"
-                                underlineColorAndroid="#F8F8F2"
+                                placeholderTextColor={
+                                    COLOR_CONSTANTS.foreground
+                                }
+                                underlineColorAndroid={
+                                    COLOR_CONSTANTS.foreground
+                                }
                                 textContentType="password"
                                 secureTextEntry={true}
                                 onChangeText={this.handleChangePassword}
                             />
                             <Button
-                                color="#BD93F9"
+                                color={COLOR_CONSTANTS.purple}
                                 title="Login"
                                 onPress={this.handlePressLogin}
                             />
@@ -177,7 +186,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#282A36'
+        backgroundColor: COLOR_CONSTANTS.background
     },
     top: {
         flex: 1,
@@ -194,15 +203,15 @@ const styles = StyleSheet.create({
         margin: 16
     },
     title: {
-        color: '#F8F8F2'
+        color: COLOR_CONSTANTS.foreground
     },
     username: {
-        color: '#F8F8F2',
+        color: COLOR_CONSTANTS.foreground,
         width: 300,
         marginBottom: 24
     },
     password: {
-        color: '#F8F8F2',
+        color: COLOR_CONSTANTS.foreground,
         width: 300,
         marginBottom: 48
     },

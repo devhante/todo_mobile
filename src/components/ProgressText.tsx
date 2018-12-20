@@ -2,6 +2,7 @@ import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { COLOR_CONSTANTS } from '../constants';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 @inject(STORE_NAME)
@@ -52,6 +53,6 @@ const styles = StyleSheet.create({
         padding: 8
     },
     text: {
-        color: '#F8F8F2'
+        color: COLOR_CONSTANTS.foreground
     }
 });
