@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { COLOR_CONSTANTS } from '../constants';
-import { ITodoSerializer } from '../serializer';
+import { ITodoSerializer } from '../models';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 interface IProps extends IStoreInjectedProps {

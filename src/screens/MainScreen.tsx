@@ -4,7 +4,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { AddButton, NavBar, ProgressText, TodoList } from '../components';
 import { COLOR_CONSTANTS } from '../constants';
-import { ITodoSerializer } from '../serializer';
+import { ITodoSerializer } from '../models';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 interface IProps extends IStoreInjectedProps {

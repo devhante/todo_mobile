@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationScreenProp } from 'react-navigation';
 import { COLOR_CONSTANTS } from '../constants';
-import { IUserSerializer } from '../serializer';
+import { IUserSerializer } from '../models';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 interface IProps extends IStoreInjectedProps {

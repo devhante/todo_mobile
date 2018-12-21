@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { action, observable } from 'mobx';
-import { ITodoSerializer } from '../serializer';
+import { ITodoSerializer } from '../models';
 import RootStore from './rootStore';
 
 export default class TodoStore {

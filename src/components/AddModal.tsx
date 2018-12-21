@@ -10,7 +10,6 @@ import {
     View
 } from 'react-native';
 import { COLOR_CONSTANTS } from '../constants';
-import { ITodoSerializer } from '../serializer';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 @inject(STORE_NAME)
