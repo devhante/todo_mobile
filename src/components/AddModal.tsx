@@ -15,7 +15,7 @@ import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 @inject(STORE_NAME)
 @observer
-export default class AddModal extends Component<IStoreInjectedProps> {
+export class AddModal extends Component<IStoreInjectedProps> {
     private handleCancel = () => {
         this.props[STORE_NAME]!.modalStore.setModalInvisible();
     };

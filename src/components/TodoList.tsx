@@ -1,12 +1,12 @@
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import TodoItem from '../components/TodoItem';
+import { TodoItem } from '.';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 @inject(STORE_NAME)
 @observer
-export default class TodoList extends Component<IStoreInjectedProps> {
+export class TodoList extends Component<IStoreInjectedProps> {
     public render() {
         const todoList = this.props[STORE_NAME]!.todoStore.todoList;
         const searchWord = this.props[STORE_NAME]!.searchStore.searchWord;

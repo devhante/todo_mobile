@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios';
+import { action } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -13,7 +14,7 @@ interface IProps extends IStoreInjectedProps {
 
 @inject(STORE_NAME)
 @observer
-export default class TodoItem extends Component<IProps> {
+export class TodoItem extends Component<IProps> {
     private handleDelete = () => {
         Alert.alert(
             '할 일 삭제하기',
@@ -59,6 +60,7 @@ export default class TodoItem extends Component<IProps> {
         }
     };
 
+    @action
     private completeTodo = async () => {
         try {
             this.props[STORE_NAME]!.loadingStore.startLoading();

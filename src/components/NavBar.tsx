@@ -8,6 +8,7 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { IconButton } from '.';
 import { COLOR_CONSTANTS } from '../constants';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
@@ -17,7 +18,7 @@ interface IProps extends IStoreInjectedProps {
 
 @inject(STORE_NAME)
 @observer
-export default class NavBar extends Component<IProps> {
+export class NavBar extends Component<IProps> {
     private handleChangeSearch = (value: string) => {
         this.props[STORE_NAME]!.searchStore.setSearchWord(value);
     };
@@ -62,28 +63,21 @@ export default class NavBar extends Component<IProps> {
                         onChangeText={this.handleChangeSearch}
                     />
                 </View>
-                <TouchableOpacity
-                    activeOpacity={0.7}
+
+                <IconButton
                     onPress={this.handlePressDelete}
-                >
-                    <Icon
-                        style={styles.deleteIcon}
-                        name="delete"
-                        size={24}
-                        color={COLOR_CONSTANTS.purple}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={0.7}
+                    style={styles.deleteIcon}
+                    iconName="delete"
+                    iconSize={24}
+                    iconColor={COLOR_CONSTANTS.purple}
+                />
+                <IconButton
                     onPress={this.handlePressLogout}
-                >
-                    <Icon
-                        style={styles.logoutIcon}
-                        name="exit-to-app"
-                        size={24}
-                        color={COLOR_CONSTANTS.purple}
-                    />
-                </TouchableOpacity>
+                    style={styles.logoutIcon}
+                    iconName="exit-to-app"
+                    iconSize={24}
+                    iconColor={COLOR_CONSTANTS.purple}
+                />
             </View>
         );
     }

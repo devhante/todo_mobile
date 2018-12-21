@@ -7,7 +7,7 @@ import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
 @inject(STORE_NAME)
 @observer
-export default class ProgressText extends Component<IStoreInjectedProps> {
+export class ProgressText extends Component<IStoreInjectedProps> {
     @computed
     get count() {
         return this.props[STORE_NAME]!.todoStore.todoList.length;
