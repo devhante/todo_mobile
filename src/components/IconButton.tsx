@@ -1,8 +1,7 @@
-import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { RegisteredStyle, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
+import { IStoreInjectedProps } from '../stores/rootStore';
 
 interface IProps extends IStoreInjectedProps {
     onPress: () => void;
@@ -12,8 +11,6 @@ interface IProps extends IStoreInjectedProps {
     iconColor: string;
 }
 
-@inject(STORE_NAME)
-@observer
 export class IconButton extends Component<IProps> {
     public render() {
         return (

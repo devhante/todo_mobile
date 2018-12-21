@@ -1,4 +1,4 @@
-import { inject, observer } from 'mobx-react';
+import { inject } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -11,7 +11,6 @@ interface IProps extends IStoreInjectedProps {
 }
 
 @inject(STORE_NAME)
-@observer
 export class NavBar extends Component<IProps> {
     private handleChangeSearch = (value: string) => {
         this.props[STORE_NAME]!.searchStore.setSearchWord(value);
