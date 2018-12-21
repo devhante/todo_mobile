@@ -4,7 +4,6 @@ import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import {
     ActivityIndicator,
-    AsyncStorage,
     Button,
     StyleSheet,
     Text,
@@ -57,7 +56,9 @@ export default class LoginScreen extends Component<IProps> {
                     password: this.password
                 }
             );
-            await AsyncStorage.setItem('authToken', response.data.authToken);
+            await this.props[STORE_NAME]!.keychainStore.setKeychain(
+                response.data.authToken
+            );
             await this.props[STORE_NAME]!.axiosStore.create();
             this.props[STORE_NAME]!.loadingStore.endLoading();
             this.props.navigation.navigate('Main');

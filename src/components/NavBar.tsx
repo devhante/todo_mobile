@@ -1,12 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import {
-    AsyncStorage,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { IconButton } from '.';
 import { COLOR_CONSTANTS } from '../constants';
@@ -29,16 +23,8 @@ export class NavBar extends Component<IProps> {
 
     private handlePressLogout = () => {
         this.props[STORE_NAME]!.deleteStore.disallowDelete();
-        this.removeAuthToken();
+        this.props[STORE_NAME]!.keychainStore.deleteKeychain();
         this.navigateToLogin();
-    };
-
-    private removeAuthToken = async () => {
-        try {
-            await AsyncStorage.removeItem('authToken');
-        } catch (error) {
-            console.log(error.message);
-        }
     };
 
     private navigateToLogin = () => {

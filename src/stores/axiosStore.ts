@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from 'axios';
-import { AsyncStorage } from 'react-native';
 import { ENV_CONSTANTS } from '../constants';
 import RootStore from './rootStore';
 
@@ -14,13 +13,14 @@ export default class AxiosStore {
 
     public create = async () => {
         try {
-            const response = await AsyncStorage.getItem('authToken');
-            if (response !== undefined) {
-                this.rootStore.axiosStore.instance = axios.create({
-                    baseURL: ENV_CONSTANTS.baseURL,
-                    headers: { Authorization: 'Token ' + response }
-                });
-            }
+            this.rootStore.axiosStore.instance = axios.create({
+                baseURL: ENV_CONSTANTS.baseURL,
+                headers: {
+                    Authorization:
+                        'Token ' +
+                        (await this.rootStore.keychainStore.getKeychain())
+                }
+            });
         } catch (error) {
             console.log(error);
         }

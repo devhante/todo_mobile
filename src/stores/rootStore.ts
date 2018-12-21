@@ -1,6 +1,7 @@
 import { configure } from 'mobx';
 import AxiosStore from './axiosStore';
 import DeleteStore from './deleteStore';
+import KeychainStore from './keychainStore';
 import LoadingStore from './loadingStore';
 import ModalStore from './modalStore';
 import SearchStore from './searchStore';
@@ -13,6 +14,7 @@ configure({
 export default class RootStore {
     public axiosStore: AxiosStore;
     public deleteStore: DeleteStore;
+    public keychainStore: KeychainStore;
     public loadingStore: LoadingStore;
     public modalStore: ModalStore;
     public searchStore: SearchStore;
@@ -21,6 +23,7 @@ export default class RootStore {
     constructor() {
         this.axiosStore = new AxiosStore(this);
         this.deleteStore = new DeleteStore(this);
+        this.keychainStore = new KeychainStore(this);
         this.loadingStore = new LoadingStore(this);
         this.modalStore = new ModalStore(this);
         this.searchStore = new SearchStore(this);

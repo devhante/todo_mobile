@@ -22,6 +22,7 @@
     "react": "^16.3.1",
     "react-native": "^0.55.4",
     "react-native-gesture-handler": "^1.0.10",
+    "react-native-keychain": "^3.0.0",
     "react-native-typescript-transformer": "^1.2.10",
     "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^2.0.0",
