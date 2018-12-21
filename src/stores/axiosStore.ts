@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { AsyncStorage } from 'react-native';
+import { ENV_CONSTANTS } from '../constants';
 import RootStore from './rootStore';
 
 export default class AxiosStore {
@@ -16,7 +17,7 @@ export default class AxiosStore {
             const response = await AsyncStorage.getItem('authToken');
             if (response !== undefined) {
                 this.rootStore.axiosStore.instance = axios.create({
-                    baseURL: 'https://practice.alpaca.kr/api/',
+                    baseURL: ENV_CONSTANTS.baseURL,
                     headers: { Authorization: 'Token ' + response }
                 });
             }

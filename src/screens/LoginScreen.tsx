@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationScreenProp } from 'react-navigation';
-import { COLOR_CONSTANTS } from '../constants';
+import { COLOR_CONSTANTS, ENV_CONSTANTS } from '../constants';
 import { IUserSerializer } from '../models';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
 
@@ -51,7 +51,7 @@ export default class LoginScreen extends Component<IProps> {
         try {
             this.props[STORE_NAME]!.loadingStore.startLoading();
             const response = await axios.post<IUserSerializer>(
-                'https://practice.alpaca.kr/api/users/login/',
+                ENV_CONSTANTS.baseURL + 'users/login/',
                 {
                     username: this.username,
                     password: this.password
