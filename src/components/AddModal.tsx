@@ -40,17 +40,8 @@ export class AddModal extends Component<IStoreInjectedProps> {
     private addTodo = async () => {
         try {
             this.props[STORE_NAME]!.loadingStore.startLoading();
-            const response = await this.props[
-                STORE_NAME
-            ]!.axiosStore.instance.post<ITodoSerializer>('todo/', {
-                content: this.props[STORE_NAME]!.modalStore.content
-            });
+            this.props[STORE_NAME]!.todoStore.addTodo();
             this.props[STORE_NAME]!.loadingStore.endLoading();
-            const newTodoList: ITodoSerializer[] = [
-                ...this.props[STORE_NAME]!.todoStore.todoList
-            ];
-            newTodoList.push(response.data);
-            this.props[STORE_NAME]!.todoStore.setTodoList(newTodoList);
         } catch (error) {
             this.props[STORE_NAME]!.loadingStore.endLoading();
             console.log(error);
