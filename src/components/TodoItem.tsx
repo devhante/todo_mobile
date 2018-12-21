@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import { action } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
@@ -7,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { COLOR_CONSTANTS } from '../constants';
 import { ITodoSerializer } from '../models';
 import { IStoreInjectedProps, STORE_NAME } from '../stores/rootStore';
+import { changeDateToFormattedString } from '../utils';
 
 interface IProps extends IStoreInjectedProps {
     todo: ITodoSerializer;
@@ -80,42 +80,14 @@ export class TodoItem extends Component<IProps> {
     };
 
     public render() {
-        const created = new Date(this.props.todo.createdAt);
-        const createdYear = created.getFullYear();
-        const createdMonth = created.getMonth();
-        const createdDate = created.getDate();
-        const createdAmpm = created.getHours() < 12 ? '오전' : '오후';
-        let createdHour = created.getHours();
-        const createdMinute = created.getMinutes();
-        const createdSecond = created.getSeconds();
-
-        const completed = this.props.todo.isCompleted
-            ? new Date(this.props.todo.completedAt)
+        const createdText =
+            changeDateToFormattedString(new Date(this.props.todo.createdAt)) +
+            '에 생성됨';
+        const completedText = this.props.todo.isCompleted
+            ? changeDateToFormattedString(
+                  new Date(this.props.todo.completedAt)
+              ) + '에 완료됨'
             : null;
-        const completedYear = completed ? completed.getFullYear() : null;
-        const completedMonth = completed ? completed.getMonth() : null;
-        const completedDate = completed ? completed.getDate() : null;
-        const completedAmpm = completed
-            ? completed.getHours() < 12
-                ? '오전'
-                : '오후'
-            : null;
-        let completedHour = completed ? completed.getHours() : null;
-        const completedMinute = completed ? completed.getMinutes() : null;
-        const completedSecond = completed ? completed.getSeconds() : null;
-
-        if (createdHour > 12) {
-            createdHour -= 12;
-        }
-
-        if (completedHour != null) {
-            if (completedHour > 12) {
-                completedHour -= 12;
-            }
-        }
-
-        const createdText = `${createdYear}년 ${createdMonth}월 ${createdDate}일 ${createdAmpm} ${createdHour}시 ${createdMinute}분 ${createdSecond}초에 생성됨`;
-        const completedText = `${completedYear}년 ${completedMonth}월 ${completedDate}일 ${completedAmpm} ${completedHour}시 ${completedMinute}분 ${completedSecond}초에 완료됨`;
 
         return (
             <View style={styles.container}>
